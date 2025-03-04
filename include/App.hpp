@@ -23,6 +23,7 @@ private:
     void ValidTask();
 
 private:
+
     State m_CurrentState = State::START;
 };
 
