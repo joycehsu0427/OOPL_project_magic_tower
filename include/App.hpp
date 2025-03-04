@@ -2,6 +2,8 @@
 #define APP_HPP
 
 #include "pch.hpp" // IWYU pragma: export
+#include "ScenesManager.hpp"
+#include "Util/Renderer.hpp"
 
 class App {
 public:
@@ -24,7 +26,14 @@ private:
 
 private:
 
+
     State m_CurrentState = State::START;
+
+    Util::Renderer m_Renderer;
+
+    std::shared_ptr<ScenesManager> m_Scene;
+
+
 };
 
 #endif
