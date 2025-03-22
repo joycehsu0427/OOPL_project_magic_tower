@@ -1,0 +1,6 @@
+Path,Name,yellow_key,blue_key,red_key
+yellow_door,yellow_door,1,0,0
+blue_door,blue_door,0,1,0
+red_door,red_door,0,0,1
+green_door,green_door,0,0,0
+iron_fence,iron_fence,0,0,0

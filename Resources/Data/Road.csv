@@ -1,0 +1,8 @@
+Path,Name,Traversable,ATK
+lava,lava,0,0
+lava_road,lava_road,1,30
+road,road,1,0
+wall,wall,0,0
+wall_b,wall_b,0,0
+wall_shine,wall_shine,0,0
+wall_special,wall_special,0,0

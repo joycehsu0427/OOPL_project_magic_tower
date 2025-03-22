@@ -2,8 +2,15 @@
 #define APP_HPP
 
 #include "pch.hpp" // IWYU pragma: export
-#include "ScenesManager.hpp"
 #include "Util/Renderer.hpp"
+
+#include "ScenesManager.hpp"
+#include "MapManager.hpp"
+#include "Player.hpp"
+#include "TextObject.hpp"
+#include "Enemy.hpp"
+#include "Item.hpp"
+#include "Road.hpp"
 
 class App {
 public:
@@ -25,14 +32,29 @@ private:
     void ValidTask();
 
 private:
-
+    enum class Scene {
+        START,
+        STORY,
+        TOWER,
+        DEAD,
+        WIN
+    };
 
     State m_CurrentState = State::START;
 
+    Scene m_Scene = Scene::START;
+
     Util::Renderer m_Renderer;
 
-    std::shared_ptr<ScenesManager> m_Scene;
+    std::shared_ptr<ScenesManager> m_SceneManager;
+    std::shared_ptr<MapManager> m_MapManager;
+    // std::shared_ptr<TextObject> m_Text;
 
+    std::shared_ptr<Player> m_Player;
+
+    // std::shared_ptr<Enemy> m_Enemy;
+    // std::shared_ptr<Item> m_Item;
+    std::shared_ptr<Road> m_Road;
 
 };
 

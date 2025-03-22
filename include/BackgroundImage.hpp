@@ -22,4 +22,4 @@ private:
     }
 };
 
-#endif //BACKGROUND_IMAGE_HPP
+#endif
