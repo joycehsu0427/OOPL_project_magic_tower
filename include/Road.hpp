@@ -7,8 +7,8 @@
 
 class Road : public Thing {
 public:
-    Road(std::vector<std::string> data, int x, int y) : Thing("Road/" + data[0], std::stoi(data[2]), x, y),
-    m_Name(data[1]), m_ATK(std::stoi(data[3])) {
+    Road(std::vector<std::string> data, int x, int y) : Thing("Road/" + data[0], std::stoi(data[1]), x, y),
+    m_ATK(std::stoi(data[2])) {
         m_ZIndex = 5;
     }
 
@@ -19,7 +19,6 @@ public:
     }
 
 private:
-    std::string m_Name;
     int m_ATK;
 };
 

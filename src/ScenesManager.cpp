@@ -9,11 +9,11 @@ ScenesManager::ScenesManager() {
     //m_Logging 初始化
     std::vector <std::string> LoggingAnimation;
     for(int i = 1; i <= 4; i++) {
-        LoggingAnimation.push_back(RESOURCE_DIR"/bmp/Scene/logging" + std::to_string(i) + ".BMP");
+        LoggingAnimation.push_back(RESOURCE_DIR"/bmp/Scene/loading" + std::to_string(i) + ".BMP");
     }
     LoggingAnimation.push_back(RESOURCE_DIR"/bmp/Scene/scene1.BMP");
-    m_Logging = std::make_shared<AnimationObject>(LoggingAnimation);
-    m_Logging->SetVisible(false);
+    m_Loading = std::make_shared<AnimationObject>(LoggingAnimation);
+    m_Loading->SetVisible(false);
 
     // 讀取Story.txt
     std::string str = "";

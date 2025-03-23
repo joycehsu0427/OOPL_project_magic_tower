@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <memory>
 
 #include "MapManager.hpp"
 
@@ -41,7 +42,7 @@ MapManager::MapManager() {
     m_RoadData = open_csv(RESOURCE_DIR"/Data/Road.csv");
 
     // 載入RoadMap
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < m_TopFloor; i++) {
         std::vector<std::vector<std::string>> RoadMapData= open_csv(RESOURCE_DIR"/Map/RoadMap_" + std::to_string(i) + ".csv");
         for (int  y= 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {
@@ -53,26 +54,31 @@ MapManager::MapManager() {
     }
 
     // 載入ThingsMap
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < m_TopFloor; i++) {
         std::vector<std::vector<std::string> > ThingsMapData = open_csv(RESOURCE_DIR"/Map/ThingsMap_" + std::to_string(i) + ".csv");
         for (int y = 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {
                 if (ThingsMapData[y][x] != "0") {
-                    LOG_DEBUG(ThingsMapData[y][x]);
+                    // LOG_DEBUG(ThingsMapData[y][x]);
                     int index = std::stoi(ThingsMapData[y][x]);
                     int num = index % 100;
-                    if (index / 100 == 1)
+                    if (index / 100 == EnemyType)
                         m_ThingMap[i][y][x] = std::make_shared<Enemy>(m_EnemyData[num], position_x[x], position_y[y]);
-                    else if (index / 100 == 2)
+                    else if (index / 100 == ItemType)
                         m_ThingMap[i][y][x] = std::make_shared<Item>(m_ItemData[num], position_x[x], position_y[y]);
-                    else if (index / 100 == 3)
+                    else if (index / 100 == NPCType)
                         m_ThingMap[i][y][x] = std::make_shared<NPC>(m_NPCData[num], i, position_x[x], position_y[y]);
-                    else if (index / 100 == 4)
+                    else if (index / 100 == DoorType)
                         m_ThingMap[i][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y]);
-                    else if (index / 100 == 5)
-                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y]);
-                    else
+                    else if (index / 100 == StairType) {
+                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y] /*, shared_from_this()*/);
+                    }
+                    else if (index / 100 == ShopType)
                         m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], position_x[x], position_y[y]);
+                    else {
+                        LOG_DEBUG("This number is incorrect.");
+                        exit(1);
+                    }
 
                     m_ThingMap[i][y][x]->SetVisible(false);
                 }
@@ -80,12 +86,69 @@ MapManager::MapManager() {
         }
     }
 
-
     //m_Player 初始化
     m_Player = std::make_shared<Player> (position_x[5], position_y [10], 5, 10);
     m_Player->SetZIndex(10);
     m_Player->SetVisible(false);
 }
+// Floor移動
+
+void MapManager::StartTower() {
+    m_CurrentFloor = 0;
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            m_RoadMap[m_CurrentFloor][y][x]->SetVisible(true);
+            if (m_ThingMap[m_CurrentFloor][y][x] != nullptr)
+                m_ThingMap[m_CurrentFloor][y][x]->SetVisible(true);
+        }
+    }
+    m_Player->SetVisible(true);
+}
+void MapManager::EndTower() {
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            m_RoadMap[m_CurrentFloor][y][x]->SetVisible(false);
+            m_ThingMap[m_CurrentFloor][y][x]->SetVisible(false);
+        }
+    }
+    m_Player->SetVisible(false);
+}
+
+void MapManager::NextFloor() {
+    if (m_CurrentFloor >= m_TopFloor - 1)
+        return;
+    MoveFloor(m_CurrentFloor, m_CurrentFloor + 1);
+    m_CurrentFloor++;
+}
+
+void MapManager::PreviousFloor() {
+    if (m_CurrentFloor <= 0)
+        return;
+    MoveFloor(m_CurrentFloor, m_CurrentFloor - 1);
+    m_CurrentFloor--;
+}
+
+void MapManager::SpecificFloor(int floornum) {
+    if (floornum < 0 || floornum > m_TopFloor)
+        return;
+    MoveFloor(m_CurrentFloor, floornum);
+}
+
+void MapManager::MoveFloor(int prefloor ,int nextfloor) {
+    for (int y = 0; y < 11; y++) {
+        for (int x = 0; x < 11; x++) {
+            m_RoadMap[prefloor][y][x]->SetVisible(false);
+            m_RoadMap[nextfloor][y][x]->SetVisible(true);
+            if (m_ThingMap[prefloor][y][x]->IsVisible()) {
+                m_ThingMap[nextfloor][y][x] = nullptr;
+            }
+            m_ThingMap[prefloor][y][x]->SetVisible(false);
+            m_ThingMap[nextfloor][y][x]->SetVisible(true);
+        }
+    }
+}
+
+
 
 // Player移動
 void MapManager::PlayerMoveUp() {
@@ -93,7 +156,7 @@ void MapManager::PlayerMoveUp() {
     int y = m_Player->GetPositionY();
     // LOG_DEBUG("DOWN" + std::to_string(x) + "," + std::to_string(y));
     if (y > 0) {
-        move(x, --y);
+        MovePlayer(x, --y);
     }
 }
 
@@ -102,7 +165,7 @@ void MapManager::PlayerMoveDown() {
     int y = m_Player->GetPositionY();
     // LOG_DEBUG("UP" + std::to_string(x) + "," + std::to_string(y));
     if (y < 10) {
-        move(x, ++y);
+        MovePlayer(x, ++y);
     }
 }
 
@@ -111,7 +174,7 @@ void MapManager::PlayerMoveLeft() {
     int y = m_Player->GetPositionY();
     // LOG_DEBUG("LEFT" + std::to_string(x) + "," + std::to_string(y));
     if (x > 0) {
-        move(--x, y);
+        MovePlayer(--x, y);
     }
 }
 
@@ -120,17 +183,17 @@ void MapManager::PlayerMoveRight() {
     int y = m_Player->GetPositionY();
     // LOG_DEBUG("RIGHT" + std::to_string(x) + "," + std::to_string(y));
     if (x < 10) {
-        move(++x, y);
+        MovePlayer(++x, y);
     }
 }
 
-void MapManager::move(int x, int y) {
+void MapManager::MovePlayer(int x, int y) {
     if (m_ThingMap[m_CurrentFloor][y][x] != nullptr) {
-        m_ThingMap[m_CurrentFloor][y][x]->Touched();
-        if (m_ThingMap[m_CurrentFloor][y][x]->IsTraversable()) {
+        if (m_ThingMap[m_CurrentFloor][y][x]->IsTraversable() || !m_ThingMap[m_CurrentFloor][y][x]->IsVisible()) {
             m_Player->SetPivot({position_x[x], position_y[y]});
             m_Player->SetPosition(x, y);
         }
+        m_ThingMap[m_CurrentFloor][y][x]->Touched();
 
     }
     if (m_ThingMap[m_CurrentFloor][y][x] == nullptr && m_RoadMap[m_CurrentFloor][y][x]->IsTraversable()) {
@@ -141,7 +204,7 @@ void MapManager::move(int x, int y) {
 
 
 // 讀取資料
-std::vector<std::vector<std::string>> MapManager::open_csv(std::string filepath) {
+std::vector<std::vector<std::string>> MapManager::open_csv(std::string filepath) const {
     std::vector<std::vector<std::string>> data;
     std::ifstream inFile(filepath, std::ios::in);
     if (!inFile) {
@@ -155,7 +218,7 @@ std::vector<std::vector<std::string>> MapManager::open_csv(std::string filepath)
     return data;
 }
 
-std::vector<std::string> MapManager::split_csv(std::string line) {
+std::vector<std::string> MapManager::split_csv(std::string line) const {
     std::vector<std::string> arr;
     std::istringstream delim(line);
     std::string token;

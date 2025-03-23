@@ -11,4 +11,4 @@ private:
 
 };
 
-#endif //TEXTOBJECT_HPP
+#endif

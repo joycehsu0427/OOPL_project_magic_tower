@@ -8,7 +8,7 @@
 class NPC : public Thing {
 public:
     NPC(std::vector<std::string> data, int floor, int x, int y) : Thing("NPC/" + data[0], false, x, y),
-    m_Name(data[1]), m_DialogPath(data[2]) {
+    m_Name(data[1]) {
         m_DialogPath = std::to_string(floor) + "_" + m_Path;
     }
 

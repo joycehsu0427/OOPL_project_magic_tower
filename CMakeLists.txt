@@ -38,12 +38,6 @@ add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
-        include/Road.hpp
-        include/NPC.hpp
-        include/Door.hpp
-        include/Stair.hpp
-        include/Shop.hpp
-        include/Thing.hpp
 )
 
 if(MSVC)

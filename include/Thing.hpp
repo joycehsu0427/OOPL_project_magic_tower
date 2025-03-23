@@ -15,6 +15,8 @@ public:
 
     bool IsTraversable() { return m_Traversable; }
 
+    bool IsVisible() { return m_Visible; }
+
     virtual void Touched() = 0;
 
 protected:

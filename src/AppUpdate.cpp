@@ -1,5 +1,7 @@
 #include "App.hpp"
 
+#include "AnimationObject.hpp"
+
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -16,21 +18,21 @@ void App::Update() {
             m_Scene = Scene::STORY;
             m_SceneManager->NextScene();
 
-
-            m_SceneManager->GetLogging()->SetVisible(true);
-            m_SceneManager->GetLogging()->SetLooping(true);
-            m_SceneManager->GetLogging()->SetPlaying();
+            std::shared_ptr<AnimationObject> loading = m_SceneManager->GetLoading();
+            loading->SetVisible(true);
+            loading->SetLooping(true);
+            loading->SetPlaying();
         }
     }
 
     // STORY
     if (m_Scene == Scene::STORY) {
-        // std::shared_ptr<Loaing>
-        if (m_SceneManager->GetLogging()->IsLooping() && m_SceneManager->GetLogging()->IsPlaying()) {
-            if (m_SceneManager->GetLogging()->GetCurrentFrameIndex() == 4) {
-                m_SceneManager->GetLogging()->SetVisible(false);
-                m_SceneManager->GetLogging()->SetLooping(false);
-                m_SceneManager->GetLogging()->SetPause();
+        std::shared_ptr<AnimationObject> loading = m_SceneManager->GetLoading();
+        if (m_SceneManager->GetLoading()->IsLooping() && m_SceneManager->GetLoading()->IsPlaying()) {
+            if (loading->GetCurrentFrameIndex() == 4) {
+                loading->SetVisible(false);
+                loading->SetLooping(false);
+                loading->SetPause();
                 m_SceneManager->StartStory();
             }
         }

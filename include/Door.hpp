@@ -5,13 +5,14 @@
 
 #include "Thing.hpp"
 
-class Door : public Thing {
+class Door : public Thing /* , public std::enable_shared_from_this<Door> */{
 public:
     Door(std::vector<std::string> data, int x, int y) : Thing("Door/" + data[0], false, x, y),
     m_Name(data[1]), m_YellowKey(std::stoi(data[2])), m_BlueKey(std::stoi(data[3])), m_RedKey(std::stoi(data[4])){}
 
     void Touched() override {
-
+        // self = nullptr;
+        m_Visible = false;
     }
 
 private:

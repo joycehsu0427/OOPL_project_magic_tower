@@ -10,13 +10,13 @@
 
 #include "Util/GameObject.hpp"
 
-class MapManager{
+class MapManager /* : public std::enable_shared_from_this<MapManager> */{
 public:
     MapManager();
 
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() {
         std::vector<std::shared_ptr<Util::GameObject>> children;
-        for (int i = 0; i < 1; i++) { // 要到26層
+        for (int i = 0; i < m_TopFloor; i++) { // 要到26層
             for (int y = 0; y < 11; y++) {
                 for (int x = 0; x < 11; x++) {
                     children.push_back(m_RoadMap[i][y][x]);
@@ -32,50 +32,14 @@ public:
 
     [[nodiscard]] std::shared_ptr<Player> GetPlayer() const { return m_Player; }
 
-    void StartTower() {
-        m_CurrentFloor = 0;
-        for (int y = 0; y < 11; y++) {
-            for (int x = 0; x < 11; x++) {
-                m_RoadMap[m_CurrentFloor][y][x]->SetVisible(true);
-                if (m_ThingMap[m_CurrentFloor][y][x] != nullptr)
-                    m_ThingMap[m_CurrentFloor][y][x]->SetVisible(true);
-            }
-        }
-        m_Player->SetVisible(true);
-    }
-    void EndTower() {
-        for (int y = 0; y < 11; y++) {
-            for (int x = 0; x < 11; x++) {
-                m_RoadMap[m_CurrentFloor][y][x]->SetVisible(false);
-                m_ThingMap[m_CurrentFloor][y][x]->SetVisible(false);
-            }
-        }
-        m_Player->SetVisible(false);
-    }
+    void StartTower();
+    void EndTower();
 
-    void NextFloor() {
-        for (int y = 0; y < 11; y++) {
-            for (int x = 0; x < 11; x++) {
-                m_RoadMap[m_CurrentFloor][y][x]->SetVisible(false);
-                m_RoadMap[m_CurrentFloor + 1][y][x]->SetVisible(true);
-                m_ThingMap[m_CurrentFloor][y][x]->SetVisible(false);
-                m_ThingMap[m_CurrentFloor + 1][y][x]->SetVisible(true);
-            }
-        }
-        m_CurrentFloor++;
-    }
+    void NextFloor();
 
-    void PreviousFloor() {
-        for (int y = 0; y < 11; y++) {
-            for (int x = 0; x < 11; x++) {
-                m_RoadMap[m_CurrentFloor][y][x]->SetVisible(false);
-                m_RoadMap[m_CurrentFloor - 1][y][x]->SetVisible(true);
-                m_ThingMap[m_CurrentFloor][y][x]->SetVisible(false);
-                m_ThingMap[m_CurrentFloor - 1][y][x]->SetVisible(true);
-            }
-        }
-        m_CurrentFloor--;
-    }
+    void PreviousFloor();
+
+    void SpecificFloor(int floornum);
 
     void PlayerMoveUp();
     void PlayerMoveDown();
@@ -83,11 +47,21 @@ public:
     void PlayerMoveRight();
 
 private:
+    enum ThingType {
+        EnemyType = 1,
+        ItemType,
+        NPCType,
+        DoorType,
+        StairType,
+        ShopType
+    };
+
     float start_position_x = 192.5f;
     float start_position_y = -385;
     float position_x[11];
     float position_y[11];
 
+    int m_TopFloor = 2; // 最高26層 0~25層
     int m_CurrentFloor = 0;
     std::shared_ptr<Road> m_RoadMap[26][11][11]; // [層數][y][x]
     std::shared_ptr<Thing> m_ThingMap[26][11][11]; // [層數][y][x]
@@ -104,10 +78,12 @@ private:
     std::vector<std::vector<std::string>> m_StairData;  // 500
     std::vector<std::vector<std::string>> m_ShopData;   // 600
 
-    void move(int x, int y);
+    void MoveFloor(int pre,int next) ;
 
-    [[nodiscard]] std::vector<std::vector<std::string>> open_csv(std::string filepath);
-    [[nodiscard]] std::vector<std::string> split_csv(std::string line);
+    void MovePlayer(int x, int y);
+
+    [[nodiscard]] std::vector<std::vector<std::string>> open_csv(std::string filepath) const;
+    [[nodiscard]] std::vector<std::string> split_csv(std::string line) const;
 
 };
 #endif

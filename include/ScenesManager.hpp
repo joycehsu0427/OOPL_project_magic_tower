@@ -16,11 +16,11 @@ public:
     ScenesManager();
 
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
-        return {m_BackGround, m_Logging, m_Story, m_Remind, m_Title};
+        return {m_BackGround, m_Loading, m_Story, m_Remind, m_Title};
     }
 
     // Loading
-    [[nodiscard]] std::shared_ptr<AnimationObject> GetLogging() const { return m_Logging; }
+    [[nodiscard]] std::shared_ptr<AnimationObject> GetLoading() const { return m_Loading; }
 
     //Story相關函數
     void StartStory () {
@@ -39,7 +39,7 @@ public:
 private:
     std::shared_ptr<BackgroundImage> m_BackGround;
 
-    std::shared_ptr<AnimationObject> m_Logging;
+    std::shared_ptr<AnimationObject> m_Loading;
     std::shared_ptr<TextObject> m_Story;
     std::shared_ptr<TextObject> m_Remind;
     std::shared_ptr<TextObject> m_Title;
