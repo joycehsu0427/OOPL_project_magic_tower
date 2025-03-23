@@ -15,7 +15,7 @@ public:
 
 
     void Touched() override {
-
+        m_Visible = false;
     }
 
 private:

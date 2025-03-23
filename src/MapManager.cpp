@@ -71,7 +71,8 @@ MapManager::MapManager() {
                     else if (index / 100 == DoorType)
                         m_ThingMap[i][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y]);
                     else if (index / 100 == StairType) {
-                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y] /*, shared_from_this()*/);
+                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y]);
+                        m_StairIndex.push_back({i, {x, y}});
                     }
                     else if (index / 100 == ShopType)
                         m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], position_x[x], position_y[y]);
@@ -91,6 +92,16 @@ MapManager::MapManager() {
     m_Player->SetZIndex(10);
     m_Player->SetVisible(false);
 }
+void MapManager::SetStair(const std::shared_ptr<MapManager> &self) {
+    for (auto index : m_StairIndex) {
+        int floor = index.first;
+        int x = index.second.first;
+        int y = index.second.second;
+        auto stair = std::dynamic_pointer_cast<Stair>(m_ThingMap[floor][y][x]);
+        stair->SetMapManager(self);
+    }
+}
+
 // Floor移動
 
 void MapManager::StartTower() {

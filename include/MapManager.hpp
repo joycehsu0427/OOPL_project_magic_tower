@@ -10,7 +10,7 @@
 
 #include "Util/GameObject.hpp"
 
-class MapManager /* : public std::enable_shared_from_this<MapManager> */{
+class MapManager  : public std::enable_shared_from_this<MapManager> {
 public:
     MapManager();
 
@@ -45,6 +45,8 @@ public:
     void PlayerMoveDown();
     void PlayerMoveLeft();
     void PlayerMoveRight();
+
+    void SetStair(const std::shared_ptr<MapManager> &self);
 
 private:
     enum ThingType {
@@ -84,6 +86,8 @@ private:
 
     [[nodiscard]] std::vector<std::vector<std::string>> open_csv(std::string filepath) const;
     [[nodiscard]] std::vector<std::string> split_csv(std::string line) const;
+
+    std::vector<std::pair<int, std::pair<int, int>>> m_StairIndex;
 
 };
 #endif

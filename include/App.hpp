@@ -47,7 +47,7 @@ private:
     Util::Renderer m_Renderer;
 
     std::shared_ptr<ScenesManager> m_SceneManager;
-    std::shared_ptr<MapManager> m_MapManager;
+    static std::shared_ptr<MapManager> m_MapManager;
     // std::shared_ptr<TextObject> m_Text;
 
     std::shared_ptr<Player> m_Player;

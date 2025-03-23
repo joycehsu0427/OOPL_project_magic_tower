@@ -14,6 +14,7 @@ void App::Start() {
     // m_Renderer.AddChild(m_Text);
 
     m_MapManager = std::make_shared<MapManager>();
+    m_MapManager->SetStair(m_MapManager);
     m_Renderer.AddChildren(m_MapManager->GetChildren());
     m_Player = m_MapManager->GetPlayer();
 
