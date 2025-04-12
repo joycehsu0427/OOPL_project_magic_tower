@@ -1,4 +1,4 @@
-Path,Name
-elder,老人
-shopkeeper,商人
-thief,盜賊
+Path,Name,Traversable
+elder,老人,0
+shopkeeper,商人,0
+road,勇者,1

@@ -156,29 +156,29 @@
 
 ## 物品
 ### 取得...
-|   物品    |                                 圖片                                 | 提示字          | 備註  |
-|:-------:|:------------------------------------------------------------------:|:-------------|:----|
-|   黃鑰匙   |      ![yellow_key.bmp](Resources/bmp/Item/Key/yellow_key.bmp)      | 黃鑰匙          |     |
-|   藍鑰匙   |        ![blue_key.bmp](Resources/bmp/Item/Key/blue_key.bmp)        | 藍鑰匙          |     |
-|   紅鑰匙   |         ![red_key.bmp](Resources/bmp/Item/Key/red_key.bmp)         | 紅鑰匙          |     |
-|  魔法之匙   |       ![magic_key.bmp](Resources/bmp/Item/Key/magic_key.bmp)       | 魔法之匙,所有鑰匙數+1 |     |
-|   錢幣    |              ![coin.bmp](Resources/bmp/Item/coin.bmp)              | 金幣200塊       |     |
-|   紅寶石   |            ![ruby.bmp](Resources/bmp/Item/Gem/ruby.bmp)            | 紅寶石,攻擊力+2    |     |
-|   藍寶石   |        ![sapphire.bmp](Resources/bmp/Item/Gem/sapphire.bmp)        | 藍寶石,防禦力+2    |     |
-|   綠寶石   |         ![emerald.bmp](Resources/bmp/Item/Gem/emerald.bmp)         | 綠寶石,敏捷+1     |     |
-|   紅傷藥   |    ![red_potion.bmp](Resources/bmp/Item/Potion/red_potion.bmp)     | 傷藥,體力+150    |     |
-|   藍傷藥   |   ![blue_potion.bmp](Resources/bmp/Item/Potion/blue_potion.bmp)    | 高級傷藥,體力+400  |     |
-|   火酒    |    ![fire_drink.bmp](Resources/bmp/Item/Potion/fire_drink.bmp)     | 火酒,回復衰弱狀態    |     |
-|   抗毒劑   |   ![anti_poison.bmp](Resources/bmp/Item/Potion/anti_poison.bmp)    | 抗毒劑,回復毒狀態    |     |
-|  躍進之翼   |         ![jump_wing.bmp](Resources/bmp/Item/jump_wing.bmp)         | 躍進之翼,等級提升一   |     |
-|  4F鐵劍   |      ![sword_e.bmp](Resources/bmp/Item/Equipment/sword_e.bmp)      | 鐵劍,攻擊力+8     |     |
-| 6F皮革之盾  |     ![shield_d.bmp](Resources/bmp/Item/Equipment/shield_d.bmp)     | 皮革之盾,防禦力+7   |     |
-|  11F鋤頭  |   ![gem_digger.bmp](Resources/bmp/Item/Equipment/gem_digger.bmp)   |              |     |
-|  12F鐵盾  |     ![shield_c.bmp](Resources/bmp/Item/Equipment/shield_c.bmp)     | 鐵盾,防禦力+13    |     |
-|  17F盾牌  | ![light_shiled.bmp](Resources/bmp/Item/Equipment/light_shiled.bmp) |              |     |
-|  18F長劍  |      ![sword_d.bmp](Resources/bmp/Item/Equipment/sword_d.bmp)      | 長劍,攻擊力+16    |     |
-| 19F寶石鋤頭 |      ![gem_hoe.bmp](Resources/bmp/Item/Equipment/gem_hoe.bmp)      | 寶石鋤頭         |     |
-|  20F鋤頭  |          ![hoe.bmp](Resources/bmp/Item/Equipment/hoe.bmp)          | 鋤頭           | 給盜賊 |
-| 魔塔5F綠色  |        ![green_veri.bmp](Resources/bmp/Item/green_veri.bmp)        |              |     |
-| 魔塔5F藍色  |         ![blue_veri.bmp](Resources/bmp/Item/blue_veri.bmp)         |              |     |
-| 魔塔5F紅色  |          ![red_veri.bmp](Resources/bmp/Item/red_veri.bmp)          |              |     |
+|   物品    |                            圖片                            | 提示字          | 備註  |
+|:-------:|:--------------------------------------------------------:|:-------------|:----|
+|   黃鑰匙   |   ![yellow_key.bmp](Resources/bmp/Item/yellow_key.bmp)   | 黃鑰匙          |     |
+|   藍鑰匙   |     ![blue_key.bmp](Resources/bmp/Item/blue_key.bmp)     | 藍鑰匙          |     |
+|   紅鑰匙   |      ![red_key.bmp](Resources/bmp/Item/red_key.bmp)      | 紅鑰匙          |     |
+|  魔法之匙   |    ![magic_key.bmp](Resources/bmp/Item/magic_key.bmp)    | 魔法之匙,所有鑰匙數+1 |     |
+|   錢幣    |         ![coin.bmp](Resources/bmp/Item/coin.bmp)         | 金幣200塊       |     |
+|   紅寶石   |         ![ruby.bmp](Resources/bmp/Item/ruby.bmp)         | 紅寶石,攻擊力+2    |     |
+|   藍寶石   |     ![sapphire.bmp](Resources/bmp/Item/sapphire.bmp)     | 藍寶石,防禦力+2    |     |
+|   綠寶石   |      ![emerald.bmp](Resources/bmp/Item/emerald.bmp)      | 綠寶石,敏捷+1     |     |
+|   紅傷藥   |   ![red_potion.bmp](Resources/bmp/Item/red_potion.bmp)   | 傷藥,體力+150    |     |
+|   藍傷藥   |  ![blue_potion.bmp](Resources/bmp/Item/blue_potion.bmp)  | 高級傷藥,體力+400  |     |
+|   火酒    |   ![fire_drink.bmp](Resources/bmp/Item/fire_drink.bmp)   | 火酒,回復衰弱狀態    |     |
+|   抗毒劑   |  ![anti_poison.bmp](Resources/bmp/Item/anti_poison.bmp)  | 抗毒劑,回復毒狀態    |     |
+|  躍進之翼   |    ![jump_wing.bmp](Resources/bmp/Item/jump_wing.bmp)    | 躍進之翼,等級提升一   |     |
+|  4F鐵劍   |      ![sword_e.bmp](Resources/bmp/Item/sword_e.bmp)      | 鐵劍,攻擊力+8     |     |
+| 6F皮革之盾  |     ![shield_d.bmp](Resources/bmp/Item/shield_d.bmp)     | 皮革之盾,防禦力+7   |     |
+|  11F鋤頭  |   ![gem_digger.bmp](Resources/bmp/Item/gem_digger.bmp)   |              |     |
+|  12F鐵盾  |     ![shield_c.bmp](Resources/bmp/Item/shield_c.bmp)     | 鐵盾,防禦力+13    |     |
+|  17F盾牌  | ![light_shiled.bmp](Resources/bmp/Item/light_shiled.bmp) |              |     |
+|  18F長劍  |      ![sword_d.bmp](Resources/bmp/Item/sword_d.bmp)      | 長劍,攻擊力+16    |     |
+| 19F寶石鋤頭 |      ![gem_hoe.bmp](Resources/bmp/Item/gem_hoe.bmp)      | 寶石鋤頭         |     |
+|  20F鋤頭  |          ![hoe.bmp](Resources/bmp/Item/hoe.bmp)          | 鋤頭           | 給盜賊 |
+| 魔塔5F綠色  |   ![green_veri.bmp](Resources/bmp/Item/green_veri.bmp)   |              |     |
+| 魔塔5F藍色  |    ![blue_veri.bmp](Resources/bmp/Item/blue_veri.bmp)    |              |     |
+| 魔塔5F紅色  |     ![red_veri.bmp](Resources/bmp/Item/red_veri.bmp)     |              |     |

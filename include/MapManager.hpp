@@ -7,16 +7,23 @@
 #include "Road.hpp"
 #include "Thing.hpp"
 #include "Player.hpp"
+#include "Fighting.hpp"
+#include "ItemDialog.hpp"
+#include "NPCDialog.hpp"
+#include "ShopDialog.hpp"
 
 #include "Util/GameObject.hpp"
 
-class MapManager  : public std::enable_shared_from_this<MapManager> {
-public:
-    MapManager();
+class ScenesManager;
 
-    [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() {
+class MapManager {
+public:
+    MapManager(const std::shared_ptr<Fighting> &fighting, const std::shared_ptr<ItemDialog> &itemDialog,
+        const std::shared_ptr<NPCDialog> &npcDialog, const std::shared_ptr<ShopDialog> &shopDialog);
+
+    [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
         std::vector<std::shared_ptr<Util::GameObject>> children;
-        for (int i = 0; i < m_TopFloor; i++) { // 要到26層
+        for (int i = 0; i < m_TopFloor; i++) {
             for (int y = 0; y < 11; y++) {
                 for (int x = 0; x < 11; x++) {
                     children.push_back(m_RoadMap[i][y][x]);
@@ -30,10 +37,8 @@ public:
         return children;
     }
 
-    [[nodiscard]] std::shared_ptr<Player> GetPlayer() const { return m_Player; }
-
     void StartTower();
-    void EndTower();
+    void EndTower() const;
 
     void NextFloor();
 
@@ -46,9 +51,12 @@ public:
     void PlayerMoveLeft();
     void PlayerMoveRight();
 
-    void SetStair(const std::shared_ptr<MapManager> &self);
+    [[nodiscard]] std::shared_ptr<Player> GetPlayer() const { return m_Player; }
+    [[nodiscard]] int GetCurrentFloor() const { return m_CurrentFloor; }
 
+    void SetScenesManager(std::shared_ptr<ScenesManager> &scenesManager);
 private:
+
     enum ThingType {
         EnemyType = 1,
         ItemType,
@@ -58,21 +66,22 @@ private:
         ShopType
     };
 
-    float start_position_x = 192.5f;
-    float start_position_y = -385;
-    float position_x[11];
-    float position_y[11];
+    // 處存每格位置的變數
+    float start_position_x;
+    float start_position_y;
+    float position_x[11] = {0};
+    float position_y[11] = {0};
 
-    int m_TopFloor = 2; // 最高26層 0~25層
-    int m_CurrentFloor = 0;
+    int m_TopFloor = 4; // 最高26層 0~25層
+    int m_CurrentFloor = 0; // 當前的樓層
     std::shared_ptr<Road> m_RoadMap[26][11][11]; // [層數][y][x]
     std::shared_ptr<Thing> m_ThingMap[26][11][11]; // [層數][y][x]
-    std::shared_ptr<Player> m_Player;
+    std::shared_ptr<Player> m_Player; // 角色物件
 
-    // RoadMap裡的東西
+    // RoadMap裡東西的資料
     std::vector<std::vector<std::string>> m_RoadData;
 
-    // ThingsMap裡的東西
+    // ThingsMap裡東西的資料
     std::vector<std::vector<std::string>> m_EnemyData;  // 100
     std::vector<std::vector<std::string>> m_ItemData;   // 200
     std::vector<std::vector<std::string>> m_NPCData;    // 300
@@ -80,14 +89,11 @@ private:
     std::vector<std::vector<std::string>> m_StairData;  // 500
     std::vector<std::vector<std::string>> m_ShopData;   // 600
 
+    std::shared_ptr<ScenesManager> m_ScenesManager;
+
+    // 基礎Move function
     void MoveFloor(int pre,int next) ;
-
     void MovePlayer(int x, int y);
-
-    [[nodiscard]] std::vector<std::vector<std::string>> open_csv(std::string filepath) const;
-    [[nodiscard]] std::vector<std::string> split_csv(std::string line) const;
-
-    std::vector<std::pair<int, std::pair<int, int>>> m_StairIndex;
 
 };
 #endif

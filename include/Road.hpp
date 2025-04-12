@@ -7,12 +7,11 @@
 
 class Road : public Thing {
 public:
-    Road(std::vector<std::string> data, int x, int y) : Thing("Road/" + data[0], std::stoi(data[1]), x, y),
+    Road(std::vector<std::string> data, int x, int y) :
+    Thing("Road/" + data[0], std::stoi(data[1]), x, y),
     m_ATK(std::stoi(data[2])) {
         m_ZIndex = 5;
     }
-
-    bool IsTraversable() { return m_Traversable; }
 
     void Touched() override {
 
@@ -22,4 +21,4 @@ private:
     int m_ATK;
 };
 
-#endif //ROAD_HPP
+#endif

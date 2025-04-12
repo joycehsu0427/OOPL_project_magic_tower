@@ -1,35 +1,26 @@
 #ifndef STAIR_HPP
 #define STAIR_HPP
 
+#include <MapManager.hpp>
+
 #include "Thing.hpp"
+
+class MapManager;
 
 class Stair : public Thing {
 public:
-    Stair(std::vector<std::string> data, int x, int y) :
-    Thing("Stair/" + data[0], false, x, y),
-    m_Name(data[1]), m_Up(std::stoi(data[2])), m_Down(std::stoi(data[3])), m_SpecificFloor(std::stoi(data[4]))
-    /*, m_MapManager(mapmanager)*/{}
+    Stair(const std::vector<std::string> &data, const int &x, const int &y, MapManager* currentmap) : Thing("Stair/" + data[0], true, x, y),
+    m_Name(data[1]), m_Up(std::stoi(data[2])), m_Down(std::stoi(data[3])), m_SpecificFloor(std::stoi(data[4])),
+    m_CurrentMap(currentmap) { }
 
-    void SetMapManager(const std::weak_ptr<MapManager> &mapManager) { m_MapManager = mapManager; }
-
-    void Touched() override {
-        if (auto mapmanager = m_MapManager.lock()) {  // 嘗試取得 shared_ptr
-            if (m_Up)
-                mapmanager->NextFloor();
-            else if (m_Down)
-                mapmanager->PreviousFloor();
-            else {
-                mapmanager->SpecificFloor(m_SpecificFloor);
-            }
-        }
-    }
+    void Touched() override;
 
 private:
     std::string m_Name;
     bool m_Up;
     bool m_Down;
     int m_SpecificFloor;
-    std::weak_ptr<MapManager> m_MapManager;
+    MapManager* m_CurrentMap;
 };
 
 #endif

@@ -6,40 +6,38 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    m_SceneManager = std::make_shared<ScenesManager>();
-    m_Renderer.AddChildren(m_SceneManager->GetChildren());
+    // 設置ItemDialog
+    m_ItemDialog = std::make_shared<ItemDialog>();
+    m_Renderer.AddChildren(m_ItemDialog->GetChildren());
 
-    // m_Text = std::make_shared<TextObject>(25, "主塔　入口");
-    // m_Text->SetPivot({-150, -335});
-    // m_Renderer.AddChild(m_Text);
+    // 設置NPCDialog
+    m_NPCDialog = std::make_shared<NPCDialog>(m_ItemDialog);
+    m_Renderer.AddChildren(m_NPCDialog->GetChildren());
 
-    m_MapManager = std::make_shared<MapManager>();
-    m_MapManager->SetStair(m_MapManager);
+    //設置ShopDialog
+    m_ShopDialog = std::make_shared<ShopDialog>();
+    m_Renderer.AddChildren(m_ShopDialog->GetChildren());
+
+    // 設置Fighting
+    m_Fighting = std::make_shared<Fighting>();
+    m_Renderer.AddChildren(m_Fighting->GetChildren());
+
+    // 設置MapManager
+    m_MapManager = std::make_shared<MapManager>(m_Fighting, m_ItemDialog, m_NPCDialog, m_ShopDialog);
     m_Renderer.AddChildren(m_MapManager->GetChildren());
+
+    // 設置Player
     m_Player = m_MapManager->GetPlayer();
 
+    // 設定Fighting的Player指標
+    m_Fighting->SetPlayer(m_Player);
 
+    // 設置SceneManager
+    m_SceneManager = std::make_shared<ScenesManager>(m_MapManager, m_Player);
+    m_Renderer.AddChildren(m_SceneManager->GetChildren());
 
-
-
-    // m_Player = std::make_shared<Player>();
-    // m_Renderer.AddChild(m_Player);
-    // m_Player->SetVisible(true);
-    // m_Player->SetPivot({38.5f, -462});
-    // m_Enemy = std::make_shared<Enemy>("green_slime","綠色史萊母",40,18,1,0,
-    //     1,1,0,0,1,0,"0",0);
-    // m_Enemy->SetVisible(false);
-    // m_Renderer.AddChild(m_Enemy);
-    //
-    // m_Item = std::make_shared<Item>("yellow_key",0,0,0,0,0,0,0,
-    // 1,0,0,0,0);
-    // m_Item->SetVisible(true);
-    // m_Renderer.AddChild(m_Item);
-
-    // std::vector<std::string> data = {"wall", "wall","0", "0"};
-    // m_Road = std::make_shared<Road>(data, 0, 0);
-    // m_Road->SetVisible(true);
-    // m_Renderer.AddChild(m_Road);
+    // 設定MapManager的SceneManager指標
+    m_MapManager->SetScenesManager(m_SceneManager);
 
     m_CurrentState = State::UPDATE;
 

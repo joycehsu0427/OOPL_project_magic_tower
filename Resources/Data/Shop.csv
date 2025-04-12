@@ -1,3 +1,10 @@
-Path,Name,Up,Down,SpecialPath
-upstair,upstair,1,0,0
-downstair,downstair,0,1,0
+Path,Name
+shop_1_1,貪婪之神
+shop_1_2,貪婪之神
+shop_1_3,貪婪之神
+shop_2_1,戰鬥之神
+shop_2_2,戰鬥之神
+shop_2_3,戰鬥之神
+thief,盜賊
+elder,老人
+shopkeeper,商人

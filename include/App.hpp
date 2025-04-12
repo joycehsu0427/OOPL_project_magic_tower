@@ -7,10 +7,10 @@
 #include "ScenesManager.hpp"
 #include "MapManager.hpp"
 #include "Player.hpp"
-#include "TextObject.hpp"
-#include "Enemy.hpp"
-#include "Item.hpp"
-#include "Road.hpp"
+#include "ItemDialog.hpp"
+#include "NPCDialog.hpp"
+#include "Fighting.hpp"
+#include "ShopDialog.hpp"
 
 class App {
 public:
@@ -40,21 +40,35 @@ private:
         WIN
     };
 
+    enum class TowerState {
+        MOVING,
+        ENEMYFIGHTING,
+        ITEMDIALOG,
+        NPCDIALOG,
+        DOOROPEN,
+        STAIRMOVING,
+        SHOPDIALOG,
+        FLYING
+    };
+
     State m_CurrentState = State::START;
 
     Scene m_Scene = Scene::START;
 
+    TowerState m_TowerState = TowerState::MOVING;
+
     Util::Renderer m_Renderer;
 
     std::shared_ptr<ScenesManager> m_SceneManager;
-    static std::shared_ptr<MapManager> m_MapManager;
-    // std::shared_ptr<TextObject> m_Text;
+    std::shared_ptr<MapManager> m_MapManager;
 
     std::shared_ptr<Player> m_Player;
 
-    // std::shared_ptr<Enemy> m_Enemy;
-    // std::shared_ptr<Item> m_Item;
-    std::shared_ptr<Road> m_Road;
+    std::shared_ptr<ItemDialog> m_ItemDialog;
+    std::shared_ptr<NPCDialog> m_NPCDialog;
+    std::shared_ptr<ShopDialog> m_ShopDialog;
+    std::shared_ptr<Fighting> m_Fighting;
+    int m_FightingTimer = 0;
 
 };
 

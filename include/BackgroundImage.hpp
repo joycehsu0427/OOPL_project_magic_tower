@@ -17,7 +17,7 @@ public:
     }
 
 private:
-    inline std::string ImagePath(const int scene) {
+    inline std::string ImagePath(const int scene) const {
         return RESOURCE_DIR"/bmp/Scene/scene" + std::to_string(scene) + ".BMP";
     }
 };

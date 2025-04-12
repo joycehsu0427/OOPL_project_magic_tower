@@ -3,9 +3,15 @@ set(SRC_FILES
     AppStart.cpp
     AppUpdate.cpp
     AppUtil.cpp
+    Fighting.cpp
     Item.cpp
     MapManager.cpp
+    NPCDialog.cpp
+    Player.cpp
+    Read.cpp
     ScenesManager.cpp
+    ShopDialog.cpp
+    Stair.cpp
     TextObject.cpp
 )
 
@@ -13,8 +19,11 @@ set(INCLUDE_FILES
     AnimationObject.hpp
     App.hpp
     BackgroundImage.hpp
+    Dialog.hpp
     Door.hpp
     Enemy.hpp
+    Fighting.hpp
+    ImageObject.hpp
     Item.hpp
     ItemDialog.hpp
     MapManager.hpp
@@ -24,6 +33,7 @@ set(INCLUDE_FILES
     Road.hpp
     ScenesManager.hpp
     Shop.hpp
+    ShopDialog.hpp
     Stair.hpp
     TextObject.hpp
     Thing.hpp
