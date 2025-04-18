@@ -16,12 +16,10 @@ public:
     m_Player(player), m_ItemDialog(itemDialog) {}
 
     void Touched() override {
-        if (m_Visible) {
-            received();
-            m_Visible = false;
-            m_ItemDialog->SetDialog(m_Dialog);
-            m_ItemDialog->SetVisible(true);
-        }
+        received();
+        m_Visible = false;
+        m_ItemDialog->SetDialog(m_Dialog);
+        m_ItemDialog->SetVisible(true);
     }
 
 private:
@@ -64,9 +62,9 @@ private:
         if (m_Coin != 0)
             m_Player->ChangeCoins(m_Coin);
         if (m_Weak)
-            m_Player->SetWeak(m_Weak);
+            m_Player->SetWeak(!m_Weak);
         if (m_Poison)
-            m_Player->SetPoison(m_Poison);
+            m_Player->SetPoison(!m_Poison);
 
     }
 };

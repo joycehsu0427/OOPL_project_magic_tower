@@ -1,18 +1,35 @@
 #include "NPCDialog.hpp"
 #include "NPC.hpp"
+#include "Util/Logger.hpp"
 
-void NPCDialog::SetNPCDialog(const std::string &imagePath, const std::vector <std::pair <std::string, std::string>> &dialog) {
+void NPCDialog::SetNPCDialog(const std::string &imagePath, const std::vector <std::pair <std::string, std::string>> &dialog,
+                             bool have_item, const std::pair <std::string, std::string> &item, bool hide, NPC* npc){
     m_ImagePath = imagePath;
     m_DialogData = dialog;
     m_DialogTime = dialog.size();
     m_CurrentDialogTime = 0;
+
+    m_HaveItem = have_item;
+    m_Item = item;
+    m_IsHide = hide;
+    m_NPC = npc;
+
     ChangeNPCDialog();
+    SetVisible(true);
 }
 
 void NPCDialog::NextDialog() {
     m_CurrentDialogTime++;
     if (m_CurrentDialogTime == m_DialogTime) {
         SetVisible(false);
+        if (m_HaveItem) {
+            m_ItemDialog->SetDialog(m_Item.first);
+            m_ItemDialog->SetVisible(true);
+            if (m_Item.second == "heart_mirror")
+                m_Player->SetHeartMirror(true);
+        }
+        if (m_IsHide)
+            m_NPC->SetVisible(false);
         return;
     }
     ChangeNPCDialog();

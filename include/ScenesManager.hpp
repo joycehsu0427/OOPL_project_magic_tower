@@ -20,9 +20,10 @@ public:
     ScenesManager(std::shared_ptr<MapManager> &mapManager, std::shared_ptr<Player> &player);
 
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
-        return {m_BackGround, m_Loading, m_Story, m_Remind, m_Floor, m_PlayerStatus,
-        m_PlayerLevel, m_PlayerHP, m_PlayerATK, m_PlayerDEF, m_PlayerAGI, m_PlayerEXP,
-        m_PlayerYellowKey, m_PlayerBlueKey, m_PlayerRedKey, m_PlayerCoins, m_EndScene, m_EndText};
+        return {m_BackGround, m_Loading, m_Story, m_Remind, m_Floor, m_PlayerImage,
+            m_PlayerStatus, m_PlayerLevel, m_PlayerHP, m_PlayerATK, m_PlayerDEF,
+            m_PlayerAGI, m_PlayerEXP,m_PlayerYellowKey, m_PlayerBlueKey, m_PlayerRedKey,
+            m_PlayerCoins, m_EndScene, m_EndText};
     }
 
     // Loading
@@ -38,6 +39,7 @@ public:
         m_Story->SetVisible(false);
         m_Remind->SetVisible(false);
         m_Floor->SetVisible(true);
+        m_PlayerImage->SetVisible(true);
         m_PlayerStatus->SetVisible(true);
         m_PlayerLevel->SetVisible(true);
         m_PlayerHP->SetVisible(true);
@@ -77,6 +79,7 @@ private:
     // 樓層顯示
     std::vector<std::string> m_Floortext;
     std::shared_ptr<TextObject> m_Floor;
+    std::shared_ptr<ImageObject> m_PlayerImage;
     std::shared_ptr<TextObject> m_PlayerStatus;
     std::shared_ptr<TextObject> m_PlayerLevel;
     std::shared_ptr<TextObject> m_PlayerHP;

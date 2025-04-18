@@ -87,7 +87,7 @@ void App::Update() {
             if (m_Fighting->IsFighting()) {
                 // 打鬥過程
                 m_FightingTimer++;
-                int timer = 20;
+                int timer = 15;
                 if (m_FightingTimer % timer == 0) {
                     if (m_Fighting->IsEnd()) {
                         m_Fighting->EndFighting();
@@ -124,9 +124,10 @@ void App::Update() {
                 m_ShopDialog->OptionDown();
             }
             else if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-                m_ShopDialog->SetVisible(false);
+                m_ShopDialog->Fixed();
             }
-            else if (m_ShopDialog->IsVisible()) {
+            else if (!m_ShopDialog->IsVisible()) {
+                // m_ShopDialog->SetVisible(false);
                 m_TowerState = TowerState::MOVING;
             }
         }

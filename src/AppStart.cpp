@@ -17,6 +17,7 @@ void App::Start() {
     //設置ShopDialog
     m_ShopDialog = std::make_shared<ShopDialog>();
     m_Renderer.AddChildren(m_ShopDialog->GetChildren());
+    // m_ShopDialog->SetVisible(true);
 
     // 設置Fighting
     m_Fighting = std::make_shared<Fighting>();
@@ -31,6 +32,12 @@ void App::Start() {
 
     // 設定Fighting的Player指標
     m_Fighting->SetPlayer(m_Player);
+
+    // 設定NPCDialog的Player指標
+    m_NPCDialog->SetPlayer(m_Player);
+
+    // 設定ShopDialog的Player指標
+    m_ShopDialog->SetPlayer(m_Player);
 
     // 設置SceneManager
     m_SceneManager = std::make_shared<ScenesManager>(m_MapManager, m_Player);

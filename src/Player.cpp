@@ -128,3 +128,6 @@ void Player::ChangeCoins(int coin) {
     m_Coins += coin;
     m_ScenesManager->ResetPlayerCoins();
 }
+void Player::SetHeartMirror(bool heartMirror) {
+    m_HeartMirror = heartMirror;
+}

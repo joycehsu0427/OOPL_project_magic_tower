@@ -57,6 +57,7 @@ public:
     void ChangeBlueKey(int key);
     void ChangeRedKey(int key);
     void ChangeCoins(int coin);
+    void SetHeartMirror(bool heartMirror);
 
 
 
@@ -74,6 +75,7 @@ private:
     int m_EXP = 0;                          // 經驗值
     std::vector <int> m_Keys = { 1, 1, 1 }; // 黃 / 藍 / 紅鑰匙
     int m_Coins = 0;                        // 金幣
+    bool m_HeartMirror = false;
 
     // 角色圖片
     // 前0 後1 左2 右3 (各有4張照片)

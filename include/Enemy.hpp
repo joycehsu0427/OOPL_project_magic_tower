@@ -19,9 +19,8 @@ public:
 
 
     void Touched() override {
-        if (m_Visible) {
-            m_Fighting->StartFighting(this);
-        }
+        // m_Visible = false;
+        m_Fighting->StartFighting(this);
     }
 
     void Die() {

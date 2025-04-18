@@ -42,12 +42,18 @@ m_MapManager(mapmanager), m_Player(player) {
     m_Floor->SetPivot({-150, -335});
     m_Floor->SetVisible(false);
 
-    int index_x = 270;
+    // m_PlayerImage 初始化
+    m_PlayerImage = std::make_shared<ImageObject>(RESOURCE_DIR"/bmp/Player/player.png", 0);
+    m_PlayerImage->SetPivot({567.875f, -365.75f});
+    m_PlayerImage->SetVisible(false);
+    m_PlayerImage->SetScale(0.73f);
+
     // m_PlayerStatus 初始化
     m_PlayerStatus = std::make_shared<TextObject>(25, m_Player->GetStatus());
-    m_PlayerStatus->SetPivot({index_x, -250});
+    m_PlayerStatus->SetPivot({300, -250});
     m_PlayerStatus->SetVisible(false);
 
+    int index_x = 270;
     // m_PlayerLevel 初始化
     m_PlayerLevel = std::make_shared<TextObject>(25, std::to_string(m_Player->GetLevel()));
     m_PlayerLevel->SetPivot({index_x, -207.5});

@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "Util/Logger.hpp"
 #include "Read.hpp"
 namespace Read {
     std::vector<std::string> split_csv(const std::string &line) {
@@ -19,7 +20,9 @@ namespace Read {
     std::vector<std::vector<std::string>> open_csv(const std::string &filepath) {
         std::vector<std::vector<std::string>> data;
         std::ifstream inFile(filepath, std::ios::in);
+        // LOG_DEBUG("Open: " + filepath);
         if (!inFile) {
+            LOG_DEBUG("Didn't find: " + filepath);
             exit(1);
         }
         std::string line;

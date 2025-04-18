@@ -72,7 +72,7 @@ private:
     float position_x[11] = {0};
     float position_y[11] = {0};
 
-    int m_TopFloor = 4; // 最高26層 0~25層
+    int m_TopFloor = 8; // 最高26層 0~25層
     int m_CurrentFloor = 0; // 當前的樓層
     std::shared_ptr<Road> m_RoadMap[26][11][11]; // [層數][y][x]
     std::shared_ptr<Thing> m_ThingMap[26][11][11]; // [層數][y][x]

@@ -11,6 +11,11 @@ public:
         m_Background->SetScale(0.73f);
         m_DialogText = std::make_shared<TextObject>(25, "dialog", 35);
     }
+    Dialog(const std::string &imgpath, const int textsize) {
+        m_Background = std::make_shared<ImageObject>(imgpath, 30);
+        m_Background->SetScale(0.73f);
+        m_DialogText = std::make_shared<TextObject>(textsize, "dialog", 35);
+    }
     virtual ~Dialog() = default;
 
     [[nodiscard]] bool IsVisible() const { return m_Visible; }

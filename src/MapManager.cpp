@@ -68,7 +68,7 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
                     else if (index / 100 == StairType)
                         m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y], this);
                     else if (index / 100 == ShopType)
-                        m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], position_x[x], position_y[y], shopDialog);
+                        m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], i, position_x[x], position_y[y], shopDialog);
                     else {
                         LOG_ERROR("This number is incorrect.");
                         exit(1);
@@ -189,7 +189,9 @@ void MapManager::MovePlayer(int x, int y) {
             m_Player->SetPosition(x, y);
         }
         // 物品被碰觸
-        m_ThingMap[m_CurrentFloor][y][x]->Touched();
+        if (m_ThingMap[m_CurrentFloor][y][x]->IsVisible()) {
+            m_ThingMap[m_CurrentFloor][y][x]->Touched();
+        }
     }
     else if (m_RoadMap[m_CurrentFloor][y][x]->IsTraversable()) {
         // player 移動

@@ -23,6 +23,7 @@ set(INCLUDE_FILES
     Door.hpp
     Enemy.hpp
     Fighting.hpp
+    Fly.hpp
     ImageObject.hpp
     Item.hpp
     ItemDialog.hpp
