@@ -7,8 +7,8 @@
 
 class Shop : public Thing {
 public:
-    Shop(const std::vector<std::string> &data, const int &floor, int x, int y, const std::shared_ptr<ShopDialog> &shopDialog) :
-    Thing ("Shop/" + data[0], false, x, y),
+    Shop(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<ShopDialog> &shopDialog) :
+    Thing ("Shop/" + data[0], false, x, y, index),
     m_ImagePath(RESOURCE_DIR"/bmp/Shop/" + data[0] + ".bmp"), m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + ".csv"),
     m_OptionPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + "_option.csv"),
     m_Name(data[1]), m_CanTouched(std::stoi(data[2])), m_Money(std::stoi(data[3])),

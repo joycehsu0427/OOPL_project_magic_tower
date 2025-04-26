@@ -11,6 +11,7 @@
 #include "ItemDialog.hpp"
 #include "NPCDialog.hpp"
 #include "ShopDialog.hpp"
+#include "Fly.hpp"
 
 #include "Util/GameObject.hpp"
 
@@ -19,7 +20,8 @@ class ScenesManager;
 class MapManager {
 public:
     MapManager(const std::shared_ptr<Fighting> &fighting, const std::shared_ptr<ItemDialog> &itemDialog,
-        const std::shared_ptr<NPCDialog> &npcDialog, const std::shared_ptr<ShopDialog> &shopDialog);
+        const std::shared_ptr<NPCDialog> &npcDialog, const std::shared_ptr<ShopDialog> &shopDialog,
+        const std::shared_ptr<Fly> &fly);
 
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
         std::vector<std::shared_ptr<Util::GameObject>> children;
@@ -53,6 +55,7 @@ public:
 
     [[nodiscard]] std::shared_ptr<Player> GetPlayer() const { return m_Player; }
     [[nodiscard]] int GetCurrentFloor() const { return m_CurrentFloor; }
+    [[nodiscard]] std::vector<std::vector<std::shared_ptr<Thing>>> GetCurrentMap() const;
 
     void SetScenesManager(std::shared_ptr<ScenesManager> &scenesManager);
 private:
@@ -76,7 +79,9 @@ private:
     int m_CurrentFloor = 0; // 當前的樓層
     std::shared_ptr<Road> m_RoadMap[26][11][11]; // [層數][y][x]
     std::shared_ptr<Thing> m_ThingMap[26][11][11]; // [層數][y][x]
+    std::pair<int, int> m_StairPosition[2][26];     // [0] 上樓 [1] 下樓
     std::shared_ptr<Player> m_Player; // 角色物件
+
 
     // RoadMap裡東西的資料
     std::vector<std::vector<std::string>> m_RoadData;
@@ -90,6 +95,7 @@ private:
     std::vector<std::vector<std::string>> m_ShopData;   // 600
 
     std::shared_ptr<ScenesManager> m_ScenesManager;
+    std::shared_ptr<Fly> m_Fly;
 
     // 基礎Move function
     void MoveFloor(int pre,int next) ;

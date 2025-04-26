@@ -3,7 +3,10 @@ set(SRC_FILES
     AppStart.cpp
     AppUpdate.cpp
     AppUtil.cpp
+    EnemyData.cpp
+    EnemyDataManager.cpp
     Fighting.cpp
+    Fly.cpp
     Item.cpp
     MapManager.cpp
     NPCDialog.cpp
@@ -22,6 +25,8 @@ set(INCLUDE_FILES
     Dialog.hpp
     Door.hpp
     Enemy.hpp
+    EnemyData.hpp
+    EnemyDataManager.hpp
     Fighting.hpp
     Fly.hpp
     ImageObject.hpp

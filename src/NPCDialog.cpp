@@ -25,8 +25,10 @@ void NPCDialog::NextDialog() {
         if (m_HaveItem) {
             m_ItemDialog->SetDialog(m_Item.first);
             m_ItemDialog->SetVisible(true);
-            if (m_Item.second == "heart_mirror")
-                m_Player->SetHeartMirror(true);
+            if (m_Item.second == "enemy_data")
+                m_Player->SetSeeEnemyData(true);
+            else if (m_Item.second == "fly")
+                m_Player->SetFly(true);
         }
         if (m_IsHide)
             m_NPC->SetVisible(false);

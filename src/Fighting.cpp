@@ -20,7 +20,7 @@ Fighting::Fighting() {
     m_Background->SetScale(0.73f);
     m_Fighting_Children.push_back(m_Background);
 
-    m_RemindText = std::make_shared<TextObject>(25, "-Space-", 35);
+    m_RemindText = std::make_shared<TextObject>(25, "-Space-", Util::Color::FromName(Util::Colors::YELLOW), 35);
     m_RemindText->SetPivot({-425, 60});
     m_RemindText->SetVisible(false);
     m_Fighting_Children.push_back(m_RemindText);

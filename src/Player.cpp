@@ -41,6 +41,8 @@ void Player::SetSceneManager(const std::shared_ptr<ScenesManager> &scenesManager
 [[nodiscard]] int Player::GetBlueKey() const { return m_Keys[1]; }
 [[nodiscard]] int Player::GetRedKey() const { return m_Keys[2]; }
 [[nodiscard]] int Player::GetCoins() const { return m_Coins; }
+[[nodiscard]] bool Player::CanSeeEnemyData() const { return m_SeeEnemyData; }
+[[nodiscard]] bool Player::CanFly() const { return m_Fly; }
 
 // 取得ScenceManager需要的文字資料
 [[nodiscard]] std::string Player::GetStatus() const {
@@ -111,7 +113,6 @@ void Player::ChangeEXP(int exp) {
     m_EXP += exp;
     m_ScenesManager->ResetPlayerEXP();
 }
-
 void Player::ChangeYellowKey(int key) {
     m_Keys[0] += key;
     m_ScenesManager->ResetPlayerYellowKey();
@@ -128,6 +129,10 @@ void Player::ChangeCoins(int coin) {
     m_Coins += coin;
     m_ScenesManager->ResetPlayerCoins();
 }
-void Player::SetHeartMirror(bool heartMirror) {
-    m_HeartMirror = heartMirror;
+void Player::SetSeeEnemyData(bool see_enemy_data) {
+    m_SeeEnemyData = see_enemy_data;
 }
+void Player::SetFly(bool fly) {
+    m_Fly = fly;
+}
+

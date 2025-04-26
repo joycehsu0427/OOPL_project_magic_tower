@@ -16,7 +16,8 @@
 #include "Util/Logger.hpp"
 
 MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::shared_ptr<ItemDialog> &itemDialog,
-    const std::shared_ptr<NPCDialog> &npcDialog, const std::shared_ptr<ShopDialog> &shopDialog) {
+    const std::shared_ptr<NPCDialog> &npcDialog, const std::shared_ptr<ShopDialog> &shopDialog,
+    const std::shared_ptr<Fly> &fly) : m_Fly(fly) {
     // xy軸位置設置
     start_position_x = 192.5f;
     start_position_y = -385;
@@ -44,7 +45,7 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
         for (int  y= 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {
                 int index = std::stoi(RoadMapData[y][x]);
-                m_RoadMap[i][y][x] = std::make_shared<Road>(m_RoadData[index], position_x[x], position_y[y]);
+                m_RoadMap[i][y][x] = std::make_shared<Road>(m_RoadData[index], position_x[x], position_y[y], index);
             }
         }
     }
@@ -58,17 +59,17 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
                     int index = std::stoi(ThingsMapData[y][x]);
                     int num = index % 100;
                     if (index / 100 == EnemyType)
-                        m_ThingMap[i][y][x] = std::make_shared<Enemy>(m_EnemyData[num], position_x[x], position_y[y], fighting);
+                        m_ThingMap[i][y][x] = std::make_shared<Enemy>(m_EnemyData[num], position_x[x], position_y[y], index, fighting);
                     else if (index / 100 == ItemType)
-                        m_ThingMap[i][y][x] = std::make_shared<Item>(m_ItemData[num], position_x[x], position_y[y], m_Player, itemDialog);
+                        m_ThingMap[i][y][x] = std::make_shared<Item>(m_ItemData[num], position_x[x], position_y[y], index, m_Player, itemDialog);
                     else if (index / 100 == NPCType)
-                        m_ThingMap[i][y][x] = std::make_shared<NPC>(m_NPCData[num], i, position_x[x], position_y[y], npcDialog);
+                        m_ThingMap[i][y][x] = std::make_shared<NPC>(m_NPCData[num], i, position_x[x], position_y[y], index, npcDialog);
                     else if (index / 100 == DoorType)
-                        m_ThingMap[i][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y], m_Player);
+                        m_ThingMap[i][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y], index, m_Player);
                     else if (index / 100 == StairType)
-                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y], this);
+                        m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y], index, this);
                     else if (index / 100 == ShopType)
-                        m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], i, position_x[x], position_y[y], shopDialog);
+                        m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], i, position_x[x], position_y[y], index, shopDialog);
                     else {
                         LOG_ERROR("This number is incorrect.");
                         exit(1);
@@ -76,6 +77,10 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
                 }
             }
         }
+        m_StairPosition[0][i] = {-1, -1};
+        m_StairPosition[1][i] = {-1, -1};
+        // LOG_DEBUG("UP" + std::to_string(m_StairPosition[0][i].first) + "," + std::to_string(m_StairPosition[0][i].second));
+        // LOG_DEBUG("DOWN" + std::to_string(m_StairPosition[1][i].first) + "," + std::to_string(m_StairPosition[1][i].second));
     }
 
 }
@@ -111,18 +116,29 @@ void MapManager::EndTower() const{
 void MapManager::NextFloor() {
     if (m_CurrentFloor >= m_TopFloor - 1)
         return;
+    m_StairPosition[0][m_CurrentFloor] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
+    m_StairPosition[1][m_CurrentFloor + 1] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
+    // LOG_DEBUG("UP" + std::to_string(m_CurrentFloor) + ":" + std::to_string(m_StairPosition[0][m_CurrentFloor].first) + "," + std::to_string(m_StairPosition[0][m_CurrentFloor].second));
     MoveFloor(m_CurrentFloor, m_CurrentFloor + 1);
 }
 
 void MapManager::PreviousFloor() {
     if (m_CurrentFloor <= 0)
         return;
+    m_StairPosition[1][m_CurrentFloor] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
+    m_StairPosition[0][m_CurrentFloor - 1] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
+    // LOG_DEBUG("DOWN" + std::to_string(m_CurrentFloor) + ":" + std::to_string(m_StairPosition[1][m_CurrentFloor].first) + "," + std::to_string(m_StairPosition[1][m_CurrentFloor].second));
     MoveFloor(m_CurrentFloor, m_CurrentFloor - 1);
 }
 
 void MapManager::SpecificFloor(int floornum) {
-    if (floornum < 0 || floornum > m_TopFloor)
+    if (floornum < 0 || floornum > m_TopFloor || m_CurrentFloor == floornum)
         return;
+    int x = m_StairPosition[m_CurrentFloor < floornum][floornum].first;
+    int y = m_StairPosition[m_CurrentFloor < floornum][floornum].second;
+    // LOG_DEBUG(std::to_string(m_CurrentFloor < floornum) + "--" + std::to_string(x) + "," + std::to_string(y));
+    m_Player->SetPivot({position_x[x], position_y[y]});
+    m_Player->SetPosition(x, y);
     MoveFloor(m_CurrentFloor, floornum);
 }
 
@@ -145,7 +161,9 @@ void MapManager::MoveFloor(int prefloor ,int nextfloor) {
         }
     }
     m_CurrentFloor = nextfloor;
+
     m_ScenesManager->ResetFloor(m_CurrentFloor);
+    m_Fly->SetFloor(m_CurrentFloor);
 }
 
 // Player移動
@@ -199,3 +217,16 @@ void MapManager::MovePlayer(int x, int y) {
         m_Player->SetPosition(x, y);
     }
 }
+
+[[nodiscard]] std::vector<std::vector<std::shared_ptr<Thing>>> MapManager::GetCurrentMap() const {
+    std::vector<std::vector<std::shared_ptr<Thing>>> currentMap;
+    for (int y = 0; y < 11; y++) {
+        std::vector<std::shared_ptr<Thing>> data;
+        for (int x = 0; x < 11; x++) {
+            data.push_back(m_ThingMap[m_CurrentFloor][y][x]);
+        }
+        currentMap.push_back(data);
+    }
+    return currentMap;
+}
+

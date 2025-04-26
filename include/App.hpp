@@ -11,6 +11,8 @@
 #include "NPCDialog.hpp"
 #include "Fighting.hpp"
 #include "ShopDialog.hpp"
+#include "Fly.hpp"
+#include "EnemyDataManager.hpp"
 
 class App {
 public:
@@ -20,7 +22,7 @@ public:
         END,
     };
 
-    State GetCurrentState() const { return m_CurrentState; }
+    [[nodiscard]] State GetCurrentState() const { return m_CurrentState; }
 
     void Start();
 
@@ -48,7 +50,8 @@ private:
         DOOROPEN,
         STAIRMOVING,
         SHOPDIALOG,
-        FLYING
+        FLYING,
+        EnemyData
     };
 
     State m_CurrentState = State::START;
@@ -64,12 +67,19 @@ private:
 
     std::shared_ptr<Player> m_Player;
 
-    std::shared_ptr<ItemDialog> m_ItemDialog;
-    std::shared_ptr<NPCDialog> m_NPCDialog;
-    std::shared_ptr<ShopDialog> m_ShopDialog;
+    // 戰鬥畫面
     std::shared_ptr<Fighting> m_Fighting;
     int m_FightingTimer = 0;
 
+    // Dialog
+    std::shared_ptr<ItemDialog> m_ItemDialog;
+    std::shared_ptr<NPCDialog> m_NPCDialog;
+    std::shared_ptr<ShopDialog> m_ShopDialog;
+
+    // 樓層飛行
+    std::shared_ptr<Fly> m_Fly;
+
+    std::shared_ptr<EnemyDataManager> m_EnemyDataManager;
 };
 
 #endif

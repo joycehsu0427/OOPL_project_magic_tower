@@ -7,9 +7,6 @@
 #include "Util/Logger.hpp"
 
 void App::Update() {
-
-    //TODO: do your things here and delete this line <3
-
     // START
     if (m_Scene == Scene::START) {
         // 按下 Space 切換到故事
@@ -60,6 +57,15 @@ void App::Update() {
             else if (Util::Input::IsKeyUp(Util::Keycode::RIGHT)) {
                 m_MapManager->PlayerMoveRight();
             }
+            else if (Util::Input::IsKeyUp(Util::Keycode::D)/* && m_Player->CanSeeEnemyData()*/) {
+                m_EnemyDataManager->SetEnemyDataManager(m_MapManager->GetCurrentMap());
+                m_TowerState = TowerState::EnemyData;
+            }
+            else if (Util::Input::IsKeyUp(Util::Keycode::F)/* && m_Player->CanFly()*/) {
+                m_Fly->StartFly();
+                m_TowerState = TowerState::FLYING;
+            }
+
             if (m_ItemDialog->IsVisible())
                 m_TowerState = TowerState::ITEMDIALOG;
             else if (m_NPCDialog->IsVisible())
@@ -131,7 +137,34 @@ void App::Update() {
                 m_TowerState = TowerState::MOVING;
             }
         }
+        else if (m_TowerState == TowerState::EnemyData) {
+            if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+                m_EnemyDataManager->SetVisible(false);
+                m_TowerState = TowerState::MOVING;
+            }
+            else if (Util::Input::IsKeyUp(Util::Keycode::LEFT)) {
+                m_EnemyDataManager->PrePage();
+            }
+            else if (Util::Input::IsKeyUp(Util::Keycode::RIGHT)) {
+                m_EnemyDataManager->NextPage();
+            }
+        }
+        else if (m_TowerState == TowerState::FLYING) {
+            if (Util::Input::IsKeyUp(Util::Keycode::UP))
+                m_Fly->Up();
+            else if (Util::Input::IsKeyUp(Util::Keycode::DOWN))
+                m_Fly->Down();
+            else if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+                m_Fly->Confirm();
+                m_TowerState = TowerState::MOVING;
+            }
+            else if (Util::Input::IsKeyUp(Util::Keycode::F)) {
+                m_Fly->SetVisible(false);
+                m_TowerState = TowerState::MOVING;
+            }
+        }
     }
+
     //DEAD
     else if (m_Scene == Scene::DEAD) {
         m_SceneManager->EndScene(false);

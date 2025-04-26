@@ -6,9 +6,10 @@
 #include "Player.hpp"
 #include "Thing.hpp"
 
-class Door : public Thing /* , public std::enable_shared_from_this<Door> */{
+class Door : public Thing{
 public:
-    Door(std::vector<std::string> data, int x, int y, std::shared_ptr<Player> &player) : Thing("Door/" + data[0], false, x, y),
+    Door(std::vector<std::string> data, const int &x, const int &y, const int &index, std::shared_ptr<Player> &player) :
+    Thing("Door/" + data[0], false, x, y, index),
     m_Name(data[1]), m_YellowKey(std::stoi(data[2])), m_BlueKey(std::stoi(data[3])), m_RedKey(std::stoi(data[4])), m_Player(player){}
 
     void Touched() override {

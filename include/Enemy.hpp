@@ -9,7 +9,8 @@
 
 class Enemy : public Thing {
 public:
-    Enemy(const std::vector<std::string> &data, const int &x, const int &y, const std::shared_ptr<Fighting> &fighting) : Thing("Enemy/" + data[0], false, x, y),
+    Enemy(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Fighting> &fighting) :
+    Thing("Enemy/" + data[0], false, x, y, index),
     m_Name(data[1]), m_HP(std::stoi(data[2])), m_ATK(std::stoi(data[3])), m_DEF(std::stoi(data[4])),
     m_AGI(std::stoi(data[5])), m_EXP(std::stoi(data[6])), m_Coin(std::stoi(data[7])), m_Weak(std::stoi(data[8])),
     m_Poison(std::stoi(data[9])), m_ATK_Time(std::stoi(data[10])), m_Ignore_DEF(std::stoi(data[11])), m_Next_Enemy(std::stoi(data[12])),

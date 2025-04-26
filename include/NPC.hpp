@@ -11,8 +11,8 @@
 
 class NPC : public Thing {
 public:
-    NPC(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const std::shared_ptr<NPCDialog> &npcDialog) :
-    Thing("NPC/" + data[0], std::stoi(data[2]), x, y),
+    NPC(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<NPCDialog> &npcDialog) :
+    Thing("NPC/" + data[0], std::stoi(data[2]), x, y, index),
     m_ImagePath(RESOURCE_DIR"/bmp/NPC/" + data[0] + ".bmp"), m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + ".csv"),
     m_Name(data[1]), m_NPCDialog(npcDialog) {
         // 設定要傳送的Dialog資料
