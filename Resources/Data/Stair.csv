@@ -1,3 +1,4 @@
 Path,Name,Up,Down,SpecialPath
 upstair,upstair,1,0,0
 downstair,downstair,0,1,0
+road,specialroad,0,0,21

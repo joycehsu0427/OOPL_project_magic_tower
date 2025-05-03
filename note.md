@@ -173,11 +173,11 @@
 |  躍進之翼   |    ![jump_wing.bmp](Resources/bmp/Item/jump_wing.bmp)    | 躍進之翼,等級提升一   |     |
 |  4F鐵劍   |      ![sword_e.bmp](Resources/bmp/Item/sword_e.bmp)      | 鐵劍,攻擊力+8     |     |
 | 6F皮革之盾  |     ![shield_d.bmp](Resources/bmp/Item/shield_d.bmp)     | 皮革之盾,防禦力+7   |     |
-|  11F鋤頭  |   ![gem_digger.bmp](Resources/bmp/Item/gem_digger.bmp)   |              |     |
+|  11F鋤頭  |   ![gem_digger.bmp](Resources/bmp/Item/gem_digger.bmp)   | 鋤頭 攻擊力+5     |     |
 |  12F鐵盾  |     ![shield_c.bmp](Resources/bmp/Item/shield_c.bmp)     | 鐵盾,防禦力+13    |     |
-|  17F盾牌  | ![light_shiled.bmp](Resources/bmp/Item/light_shiled.bmp) |              |     |
+|  17F盾牌  | ![light_shiled.bmp](Resources/bmp/Item/light_shiled.bmp) | 高級盾牌 防禦力+20  |     |
 |  18F長劍  |      ![sword_d.bmp](Resources/bmp/Item/sword_d.bmp)      | 長劍,攻擊力+16    |     |
-| 19F寶石鋤頭 |      ![gem_hoe.bmp](Resources/bmp/Item/gem_hoe.bmp)      | 寶石鋤頭         |     |
+| 19F寶石鋤頭 |      ![gem_hoe.bmp](Resources/bmp/Item/gem_hoe.bmp)      | 寶石鋤頭 攻擊力+7   |     |
 |  20F鋤頭  |          ![hoe.bmp](Resources/bmp/Item/hoe.bmp)          | 鋤頭           | 給盜賊 |
 | 魔塔5F綠色  |   ![green_veri.bmp](Resources/bmp/Item/green_veri.bmp)   |              |     |
 | 魔塔5F藍色  |    ![blue_veri.bmp](Resources/bmp/Item/blue_veri.bmp)    |              |     |

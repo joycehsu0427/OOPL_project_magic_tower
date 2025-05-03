@@ -57,7 +57,7 @@ public:
     [[nodiscard]] int GetCurrentFloor() const { return m_CurrentFloor; }
     [[nodiscard]] std::vector<std::vector<std::shared_ptr<Thing>>> GetCurrentMap() const;
 
-    void SetScenesManager(std::shared_ptr<ScenesManager> &scenesManager);
+    void SetScenesManager(const std::shared_ptr<ScenesManager> &scenesManager);
 private:
 
     enum ThingType {
@@ -66,7 +66,9 @@ private:
         NPCType,
         DoorType,
         StairType,
-        ShopType
+        ShopType,
+        BigEnemyType,
+        FakePrincessType
     };
 
     // 處存每格位置的變數
@@ -75,7 +77,7 @@ private:
     float position_x[11] = {0};
     float position_y[11] = {0};
 
-    int m_TopFloor = 8; // 最高26層 0~25層
+    int m_TopFloor = 20; // 最高26層 0~25層
     int m_CurrentFloor = 0; // 當前的樓層
     std::shared_ptr<Road> m_RoadMap[26][11][11]; // [層數][y][x]
     std::shared_ptr<Thing> m_ThingMap[26][11][11]; // [層數][y][x]
@@ -87,12 +89,14 @@ private:
     std::vector<std::vector<std::string>> m_RoadData;
 
     // ThingsMap裡東西的資料
-    std::vector<std::vector<std::string>> m_EnemyData;  // 100
-    std::vector<std::vector<std::string>> m_ItemData;   // 200
-    std::vector<std::vector<std::string>> m_NPCData;    // 300
-    std::vector<std::vector<std::string>> m_DoorData;   // 400
-    std::vector<std::vector<std::string>> m_StairData;  // 500
-    std::vector<std::vector<std::string>> m_ShopData;   // 600
+    std::vector<std::vector<std::string>> m_EnemyData;      // 100
+    std::vector<std::vector<std::string>> m_ItemData;       // 200
+    std::vector<std::vector<std::string>> m_NPCData;        // 300
+    std::vector<std::vector<std::string>> m_DoorData;       // 400
+    std::vector<std::vector<std::string>> m_StairData;      // 500
+    std::vector<std::vector<std::string>> m_ShopData;       // 600
+    std::vector<std::vector<std::string>> m_BigEnemyData;   // 700
+    std::vector<std::vector<std::string>> m_FakePrincessData;   // 800
 
     std::shared_ptr<ScenesManager> m_ScenesManager;
     std::shared_ptr<Fly> m_Fly;

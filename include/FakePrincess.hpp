@@ -1,0 +1,4 @@
+#ifndef FAKEPRINCESS_HPP
+#define FAKEPRINCESS_HPP
+
+#endif

@@ -140,20 +140,63 @@ void EnemyData::SetEnemy(int num) const {
     m_ATK->SetText(enemydata[num][3]);
     m_DEF->SetText(enemydata[num][4]);
     m_AGI->SetText(enemydata[num][5]);
+    m_ATKTime->SetText(enemydata[num][10]);
 
-    int hp = std::stoi(enemydata[num][2]);
-    int atktime = hp / m_Player->GetATK();
-    if (hp % m_Player->GetATK())
-        atktime++;
-    m_ATKTime->SetText(std::to_string(atktime));
-    int atk = std::stoi(enemydata[num][3]) - m_Player->GetDEF();
+    int enemy_hp = std::stoi(enemydata[num][2]);
+    int enemy_atk = std::stoi(enemydata[num][3]);
+    int enemy_def = std::stoi(enemydata[num][4]);
+    int enemy_atktime = std::stoi(enemydata[num][10]);
+    bool enemy_ignoredef = std::stoi(enemydata[num][11]);
+    int atk = m_Player->GetATK() - enemy_def;
     if (atk <= 0)
         atk = 1;
-    int hurt = atktime * atk;
+    int atktime = (enemy_hp - 1) / atk;
+    int atkhp = enemy_atk;
+    if (!enemy_ignoredef) {
+        atkhp -= m_Player->GetDEF();
+    }
+    if (atkhp <= 0)
+        atkhp = 1;
+    atkhp *= enemy_atktime;
+    int hurt = atktime * atkhp;
     m_Hurt->SetText(std::to_string(hurt));
     m_EXP->SetText(enemydata[num][6]);
     m_Coin->SetText(enemydata[num][7]);
 }
+
+void EnemyData::SetEnemy(const std::shared_ptr<Enemy> &enemy) const{
+    m_Image->SetImage(enemy->GetImage_Path());
+    m_Name->SetText(enemy->GetName());
+    m_Special->SetText(enemy->GetSpecial());
+    m_HP->SetText(std::to_string(enemy->GetHP()));
+    m_ATK->SetText(std::to_string(enemy->GetATK()));
+    m_DEF->SetText(std::to_string(enemy->GetDEF()));
+    m_AGI->SetText(std::to_string(enemy->GetAGI()));
+    m_ATKTime->SetText(std::to_string(enemy->GetATK_Time()));
+
+    int enemy_hp = enemy->GetHP();
+    int enemy_atk = enemy->GetATK();
+    int enemy_def = enemy->GetDEF();
+    int enemy_atktime = enemy->GetATK_Time();
+    bool enemy_ignoredef = enemy->GetIgnore_DEF();
+    int atk = m_Player->GetATK() - enemy_def;
+    if (atk <= 0)
+        atk = 1;
+    int atktime = (enemy_hp - 1) / atk;
+    int atkhp = enemy_atk;
+    if (!enemy_ignoredef) {
+        atkhp -= m_Player->GetDEF();
+    }
+    if (atkhp <= 0)
+        atkhp = 1;
+    atkhp *= enemy_atktime;
+    int hurt = atktime * atkhp;
+    m_Hurt->SetText(std::to_string(hurt));
+    m_EXP->SetText(std::to_string(enemy->GetEXP()));
+    m_Coin->SetText(std::to_string(enemy->GetCoin()));
+}
+
+
 void EnemyData::SetPlayer(const std::shared_ptr<Player> &player) {
     m_Player = player;
 }

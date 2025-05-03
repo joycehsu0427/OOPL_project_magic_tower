@@ -6,8 +6,10 @@
 void App::Start() {
     LOG_TRACE("Start");
 
+    srand(time(NULL));
     // 設置Fighting
     m_Fighting = std::make_shared<Fighting>();
+    // m_Fighting->SetVisible(true);
     m_Renderer.AddChildren(m_Fighting->GetChildren());
 
     // 設置ItemDialog

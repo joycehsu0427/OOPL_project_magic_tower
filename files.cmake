@@ -11,6 +11,7 @@ set(SRC_FILES
     MapManager.cpp
     NPCDialog.cpp
     Player.cpp
+    Random.cpp
     Read.cpp
     ScenesManager.cpp
     ShopDialog.cpp
@@ -22,11 +23,13 @@ set(INCLUDE_FILES
     AnimationObject.hpp
     App.hpp
     BackgroundImage.hpp
+    BigEnemy.hpp
     Dialog.hpp
     Door.hpp
     Enemy.hpp
     EnemyData.hpp
     EnemyDataManager.hpp
+    FakePrincess.hpp
     Fighting.hpp
     Fly.hpp
     ImageObject.hpp
@@ -36,6 +39,7 @@ set(INCLUDE_FILES
     NPC.hpp
     NPCDialog.hpp
     Player.hpp
+    Random.hpp
     Road.hpp
     ScenesManager.hpp
     Shop.hpp

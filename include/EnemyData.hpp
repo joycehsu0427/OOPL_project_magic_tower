@@ -4,12 +4,14 @@
 #include "ImageObject.hpp"
 #include "TextObject.hpp"
 #include "Player.hpp"
+#include "Enemy.hpp"
 
 class EnemyData {
 public:
     EnemyData(int num);
 
     void SetEnemy(int num) const;
+    void SetEnemy(const std::shared_ptr<Enemy> &enemy) const;
     void SetPlayer(const std::shared_ptr<Player> &player);
     void SetVisible(bool visible) {
         m_Visible = visible;

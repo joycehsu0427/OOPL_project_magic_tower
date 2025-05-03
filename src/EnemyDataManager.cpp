@@ -56,40 +56,43 @@ void EnemyDataManager::PrePage() {
 
 
 void EnemyDataManager::SetPlayer(const std::shared_ptr<Player> &player) const {
-    for (int i = 0; i < 3; i++)
-        m_EnemyData[i]->SetPlayer(player);
+    for (auto &enemydata : m_EnemyData)
+        enemydata->SetPlayer(player);
 }
 
 void EnemyDataManager::SetEnemyDataManager(const std::vector<std::vector<std::shared_ptr<Thing>>> &currentMap) {
     SetVisible(true);
-    int m_index[36] = {0};
+    std::shared_ptr<Enemy> m_Enemy[28] = {nullptr};
     for (int y = 0; y < 11; y++) {
         for (int x = 0; x < 11; x++) {
             if (currentMap[y][x] != nullptr) {
                 if (currentMap[y][x]->IsVisible()) {
                     int index = currentMap[y][x]->GetIndex();
                     if (index / 100 == 1) {
-                        m_index[index % 100] = 1;
+                        if (m_Enemy[index % 100] == nullptr) {
+                            auto temp = std::dynamic_pointer_cast<Enemy>(currentMap[y][x]);
+                            m_Enemy[index % 100] = temp;
+                        }
                     }
                 }
             }
         }
     }
-    m_EnemyList.clear();
-    for (int i = 1; i < 36; i++) {
-        if (m_index[i])
-            m_EnemyList.push_back(i);
+    m_Enemy_List.clear();
+    for (int i = 1; i < 28; i++) {
+        if (m_Enemy[i] != nullptr)
+            m_Enemy_List.push_back(m_Enemy[i]);
     }
 
     m_CurrentPage = 0;
-    if (m_EnemyList.size() > 0) {
-        m_Page = (m_EnemyList.size() - 1) / 3 + 1;
+    if (!m_Enemy_List.empty()) {
+        m_Page = (m_Enemy_List.size() - 1) / 3 + 1;
         SetEnemies();
     }
     else {
         m_Page = 1;
-        for (int i = 0; i < 3; i++)
-            m_EnemyData[i]->SetVisible(false);
+        for (auto &enemydata : m_EnemyData)
+            enemydata->SetVisible(false);
     }
 
     m_LeftArrow->SetImage(RESOURCE_DIR"/bmp/Special/left_arrow_gray.png");
@@ -102,24 +105,23 @@ void EnemyDataManager::SetEnemyDataManager(const std::vector<std::vector<std::sh
 
 void EnemyDataManager::SetEnemies() const {
     long long unsigned int num = m_CurrentPage * 3;
-    for (int i = 0; i < 3; i++) {
-        m_EnemyData[i]->SetVisible(true);
-    }
-    if (m_EnemyList.size() >= num + 3) {
+    for (auto &enemydata : m_EnemyData)
+        enemydata->SetVisible(true);
+    if (m_Enemy_List.size() >= num + 3) {
         // LOG_DEBUG(std::to_string(m_EnemyList[num]) + ", " + std::to_string(m_EnemyList[num+1]) + ", " + std::to_string(m_EnemyList[num+2]));
-        m_EnemyData[0]->SetEnemy(m_EnemyList[num]);
-        m_EnemyData[1]->SetEnemy(m_EnemyList[num + 1]);
-        m_EnemyData[2]->SetEnemy(m_EnemyList[num + 2]);
+        m_EnemyData[0]->SetEnemy(m_Enemy_List[num]);
+        m_EnemyData[1]->SetEnemy(m_Enemy_List[num + 1]);
+        m_EnemyData[2]->SetEnemy(m_Enemy_List[num + 2]);
     }
-    else if (m_EnemyList.size() == num + 2) {
+    else if (m_Enemy_List.size() == num + 2) {
         // LOG_DEBUG(std::to_string(m_EnemyList[num]) + ", " + std::to_string(m_EnemyList[num+1]));
-        m_EnemyData[0]->SetEnemy(m_EnemyList[num]);
-        m_EnemyData[1]->SetEnemy(m_EnemyList[num + 1]);
+        m_EnemyData[0]->SetEnemy(m_Enemy_List[num]);
+        m_EnemyData[1]->SetEnemy(m_Enemy_List[num + 1]);
         m_EnemyData[2]->SetVisible(false);
     }
-    else if (m_EnemyList.size() == num + 1) {
+    else if (m_Enemy_List.size() == num + 1) {
         // LOG_DEBUG(std::to_string(m_EnemyList[num]));
-        m_EnemyData[0]->SetEnemy(m_EnemyList[num]);
+        m_EnemyData[0]->SetEnemy(m_Enemy_List[num]);
         m_EnemyData[1]->SetVisible(false);
         m_EnemyData[2]->SetVisible(false);
     }

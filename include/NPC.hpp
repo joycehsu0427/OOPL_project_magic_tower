@@ -9,7 +9,7 @@
 #include "Read.hpp"
 
 
-class NPC : public Thing {
+class NPC : virtual public Thing {
 public:
     NPC(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<NPCDialog> &npcDialog) :
     Thing("NPC/" + data[0], std::stoi(data[2]), x, y, index),

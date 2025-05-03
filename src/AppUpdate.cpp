@@ -61,7 +61,7 @@ void App::Update() {
                 m_EnemyDataManager->SetEnemyDataManager(m_MapManager->GetCurrentMap());
                 m_TowerState = TowerState::EnemyData;
             }
-            else if (Util::Input::IsKeyUp(Util::Keycode::F)/* && m_Player->CanFly()*/) {
+            else if (Util::Input::IsKeyUp(Util::Keycode::F) && m_Player->CanFly()) {
                 m_Fly->StartFly();
                 m_TowerState = TowerState::FLYING;
             }
@@ -107,8 +107,12 @@ void App::Update() {
                     }
                     else {
                         m_Fighting->EnemyATK();
-                        m_FightingTimer = 0;
+                        if (m_Fighting->IsEnemyATKEnd())
+                            m_FightingTimer = 0;
                     }
+                }
+                else if (m_FightingTimer % timer == timer / 2 + timer / 4) {
+                    m_Fighting->ClearEffect();
                 }
                 if (Util::Input::IsKeyUp(Util::Keycode::Q)) {
                     m_Fighting->QuitFighting();

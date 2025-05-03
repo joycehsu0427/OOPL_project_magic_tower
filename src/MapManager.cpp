@@ -10,6 +10,8 @@
 #include "Door.hpp"
 #include "Stair.hpp"
 #include "Shop.hpp"
+#include "BigEnemy.hpp"
+#include "FakePrincess.hpp"
 #include "ScenesManager.hpp"
 #include "Read.hpp"
 
@@ -37,6 +39,8 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
     m_DoorData = Read::open_csv(RESOURCE_DIR"/Data/Door.csv");
     m_StairData = Read::open_csv(RESOURCE_DIR"/Data/Stair.csv");
     m_ShopData = Read::open_csv(RESOURCE_DIR"/Data/Shop.csv");
+    m_BigEnemyData = Read::open_csv(RESOURCE_DIR"/Data/BigEnemy.csv");;
+    m_FakePrincessData = Read::open_csv(RESOURCE_DIR"/Data/FakePrincess.csv");
     m_RoadData = Read::open_csv(RESOURCE_DIR"/Data/Road.csv");
 
     // 載入RoadMap
@@ -51,6 +55,8 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
     }
 
     // 載入ThingsMap
+    std::vector<std::shared_ptr<Thing>> otherBigEnemies;
+    int bigEnemies = 0;
     for (int i = 0; i < m_TopFloor; i++) {
         std::vector<std::vector<std::string> > ThingsMapData = Read::open_csv(RESOURCE_DIR"/Map/ThingsMap_" + std::to_string(i) + ".csv");
         for (int y = 0; y < 11; y++) {
@@ -70,8 +76,24 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
                         m_ThingMap[i][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y], index, this);
                     else if (index / 100 == ShopType)
                         m_ThingMap[i][y][x] = std::make_shared<Shop>(m_ShopData[num], i, position_x[x], position_y[y], index, shopDialog);
+                    else if (index / 100 == BigEnemyType) {
+                        m_ThingMap[i][y][x] = std::make_shared<BigEnemy>(m_BigEnemyData[num], position_x[x], position_y[y], fighting);
+                        bigEnemies++;
+                        if (bigEnemies != 8) {
+                            otherBigEnemies.push_back(m_ThingMap[i][y][x]);
+                        }
+                        if (bigEnemies == 9) {
+                            auto temp = std::dynamic_pointer_cast<BigEnemy>(m_ThingMap[i][y][x - 1]);
+                            temp->SetOtherEnemy(otherBigEnemies);
+                            bigEnemies = 0;
+                            otherBigEnemies.clear();
+                        }
+                    }
+                    else if (index / 100 == FakePrincessType) {
+                        // m_ThingMap[i][y][x] = 0;
+                    }
                     else {
-                        LOG_ERROR("This number is incorrect.");
+                        LOG_ERROR("This ThingMap number is incorrect.");
                         exit(1);
                     }
                 }
@@ -85,7 +107,7 @@ MapManager::MapManager(const std::shared_ptr<Fighting> &fighting, const std::sha
 
 }
 
-void MapManager::SetScenesManager(std::shared_ptr<ScenesManager> &scenesManager) {
+void MapManager::SetScenesManager(const std::shared_ptr<ScenesManager> &scenesManager) {
     m_ScenesManager = scenesManager;
     m_Player->SetSceneManager(scenesManager);
 }
@@ -118,7 +140,6 @@ void MapManager::NextFloor() {
         return;
     m_StairPosition[0][m_CurrentFloor] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
     m_StairPosition[1][m_CurrentFloor + 1] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
-    // LOG_DEBUG("UP" + std::to_string(m_CurrentFloor) + ":" + std::to_string(m_StairPosition[0][m_CurrentFloor].first) + "," + std::to_string(m_StairPosition[0][m_CurrentFloor].second));
     MoveFloor(m_CurrentFloor, m_CurrentFloor + 1);
 }
 
@@ -127,7 +148,6 @@ void MapManager::PreviousFloor() {
         return;
     m_StairPosition[1][m_CurrentFloor] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
     m_StairPosition[0][m_CurrentFloor - 1] = {m_Player->GetPositionX(), m_Player->GetPositionY()};
-    // LOG_DEBUG("DOWN" + std::to_string(m_CurrentFloor) + ":" + std::to_string(m_StairPosition[1][m_CurrentFloor].first) + "," + std::to_string(m_StairPosition[1][m_CurrentFloor].second));
     MoveFloor(m_CurrentFloor, m_CurrentFloor - 1);
 }
 
@@ -136,7 +156,6 @@ void MapManager::SpecificFloor(int floornum) {
         return;
     int x = m_StairPosition[m_CurrentFloor < floornum][floornum].first;
     int y = m_StairPosition[m_CurrentFloor < floornum][floornum].second;
-    // LOG_DEBUG(std::to_string(m_CurrentFloor < floornum) + "--" + std::to_string(x) + "," + std::to_string(y));
     m_Player->SetPivot({position_x[x], position_y[y]});
     m_Player->SetPosition(x, y);
     MoveFloor(m_CurrentFloor, floornum);

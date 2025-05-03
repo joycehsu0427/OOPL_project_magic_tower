@@ -1,5 +1,7 @@
 #include "Fighting.hpp"
 #include "Enemy.hpp"
+#include "Random.hpp"
+#include "Util/Logger.hpp"
 
 Fighting::Fighting() {
     int mid_position_x = -145;
@@ -32,12 +34,17 @@ Fighting::Fighting() {
 
     m_Visible = false;
 
+    m_SpecialATK = std::make_shared<TextObject>(20, "中毒", Util::Color::FromName(Util::Colors::RED), 35);
+    m_SpecialATK->SetPivot({name_position_x[0], 30});
+    m_SpecialATK->SetVisible(false);
+    m_Effect_Children.push_back(m_SpecialATK);
 
     for (int i = 0; i < 2; i++) {
         std::string data_title[4];
         for (int j = 0; j < 4; j++) {
             data_title[j] = data_title_basic[j];
-            if (i == 0) data_title[j] = "：" + data_title[j];
+            if (i == 0)
+                data_title[j] = "：" + data_title[j];
             else data_title[j] = data_title[j] + "：";
         }
 
@@ -152,6 +159,7 @@ void Fighting::StartFighting(Enemy *enemy) {
     m_ATK[1] = m_Enemy->GetATK();
     m_DEF[1] = m_Enemy->GetDEF();
     m_AGI[1] = m_Enemy->GetAGI();
+    m_EnemyIgnoreDEF = m_Enemy->GetIgnore_DEF();
     // 視窗設定
     m_RemindText->SetText("退出(Q)");
     m_Image[1]->SetImage(m_Enemy->GetImage_Path());
@@ -163,50 +171,103 @@ void Fighting::StartFighting(Enemy *enemy) {
         m_AGI_Text[i]->SetText(std::to_string(m_AGI[i]));
     }
     m_Visible = true;
-    for (auto& child : m_Fighting_Children) {
+    for (auto& child : m_Fighting_Children)
         child->SetVisible(m_Visible);
-    }
 }
 
 void Fighting::PlayerATK() {
     int atk = m_ATK[0] - m_DEF[1];
-    if (atk <= 0) {
+    if (atk <= 0)
         atk = 1;
+    if (m_AGI[1] != 0) {
+        int miss = Random::random(100);
+        // LOG_DEBUG("player atk " + std::to_string(miss));
+        if (miss < m_AGI[1])
+            m_Minus_HP[1]->SetText("Miss");
+        else
+            EnemyHPMinus(atk);
     }
-    m_HP[1] -= atk;
-    m_Effect[0]->SetVisible(false);
-    m_Effect[1]->SetVisible(true);
-    m_Minus_HP[1]->SetText(std::to_string(atk));
-    m_Minus_HP[0]->SetVisible(false);
+    else
+        EnemyHPMinus(atk);
     m_Minus_HP[1]->SetVisible(true);
     if (m_HP[1] <= 0) {
         m_HP_Text[1]->SetText("0");
         m_EndFighting = true;
     }
-    else {
+    else
         m_HP_Text[1]->SetText(std::to_string(m_HP[1]));
-    }
+    m_EnemyATKTime = 0;
 }
 
 void Fighting::EnemyATK() {
-    int atk = m_ATK[1] - m_DEF[0];
-    if (atk <= 0) {
+    int atk = m_ATK[1];
+    if (!m_EnemyIgnoreDEF)
+        atk -= m_DEF[0];
+    if (atk <= 0)
         atk = 1;
+    // 普通攻擊
+    if (m_AGI[0] != 0) {
+        int miss = Random::random(100);
+        // LOG_DEBUG("enemy atk  " + std::to_string(miss));
+        if (miss < m_AGI[0]) {
+            m_Minus_HP[0]->SetText("Miss");
+            atk = 0;
+        }
+        else
+            PlayerHPMinus(atk);
     }
-    m_HP[0] -= atk;
-    m_Effect[0]->SetVisible(true);
-    m_Effect[1]->SetVisible(false);
-    m_Minus_HP[0]->SetText(std::to_string(atk));
+    else
+        PlayerHPMinus(atk);
+    if (atk != 0) {
+        // 必殺攻擊
+        if (m_Enemy->GetKilling_ATK() != 0) {
+            int kill = Random::random(100);
+            if (kill < m_Enemy->GetKilling_ATK()) {
+                m_Minus_HP[0]->SetText("Kill");
+                m_HP[0] = 0;
+                m_Effect[0]->SetVisible(true);
+            }
+        }
+        // 虛弱
+        if (m_Enemy->GetWeak() != 0) {
+            int weak = Random::random(100);
+            if (weak < 1) {
+                m_SpecialATK->SetText("衰弱");
+                m_SpecialATK->SetVisible(true);
+                m_Player->SetWeak(true);
+            }
+        }
+        // 中毒
+        if (m_Enemy->GetPoison() != 0) {
+            int poison = Random::random(100);
+            if (poison < 1) {
+                m_SpecialATK->SetText("中毒");
+                m_SpecialATK->SetVisible(true);
+                m_Player->SetPoison(true);
+            }
+        }
+    }
     m_Minus_HP[0]->SetVisible(true);
-    m_Minus_HP[1]->SetVisible(false);
     if (m_HP[0] <= 0) {
         m_HP_Text[0]->SetText("0");
         m_Player->SetHP(0);
         m_EndFighting = true;
     }
-    else {
+    else
         m_HP_Text[0]->SetText(std::to_string(m_HP[0]));
-    }
+    m_EnemyATKTime++;
+}
+
+void Fighting::PlayerHPMinus(int atk) {
+    m_HP[0] -= atk;
+    m_Effect[0]->SetVisible(true);
+    m_Minus_HP[0]->SetText(std::to_string(atk));
+}
+
+void Fighting::EnemyHPMinus(int atk) {
+    m_HP[1] -= atk;
+    m_Effect[1]->SetVisible(true);
+    m_Minus_HP[1]->SetText(std::to_string(atk));
 }
 
 
@@ -221,26 +282,33 @@ void Fighting::EndFighting() {
         m_Minus_HP[i]->SetVisible(false);
     }
     m_IsFighting = false;
-    if (m_HP[1] <= 0) {
+    if (m_HP[1] <= 0)
         EnemyDie();
+}
+
+void Fighting::ClearEffect() {
+    for (auto& effect : m_Effect_Children) {
+        effect->SetVisible(false);
     }
 }
 
+
 void Fighting::SetVisible(const bool &visible) {
     m_Visible = visible;
-    for (auto& child : m_Fighting_Children) {
+    for (auto& child : m_Fighting_Children)
         child->SetVisible(m_Visible);
-    }
-    for (auto& child : m_Effect_Children) {
+    for (auto& child : m_Effect_Children)
         child->SetVisible(m_Visible);
-    }
-    for (auto& child : m_Reward_Children) {
+    for (auto& child : m_Reward_Children)
         child->SetVisible(m_Visible);
-    }
 }
 
 void Fighting::SetPlayer(const std::shared_ptr<Player> &player) {
     m_Player = player;
+}
+
+[[nodiscard]] bool Fighting::IsEnemyATKEnd() const {
+    return  m_Enemy->GetATK_Time() == m_EnemyATKTime;
 }
 
 void Fighting::EnemyDie() {
@@ -252,9 +320,8 @@ void Fighting::EnemyDie() {
 }
 
 void Fighting::Reward() {
-    for (auto& child : m_Reward_Children) {
+    for (auto& child : m_Reward_Children)
         child->SetVisible(true);
-    }
     m_Player->ChangeEXP(m_Enemy->GetEXP());
     m_Player->ChangeCoins(m_Enemy->GetCoin());
     m_EXP_Text->SetText(std::to_string(m_Enemy->GetEXP()));

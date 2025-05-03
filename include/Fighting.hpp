@@ -16,12 +16,14 @@ public:
     void EnemyATK();
     void QuitFighting();
     void EndFighting();
+    void ClearEffect();
 
     void SetVisible(const bool &visible);
     void SetPlayer(const std::shared_ptr<Player> &player);
 
     [[nodiscard]] bool IsVisible() const { return m_Visible; }
     [[nodiscard]] bool IsFighting() const { return m_IsFighting; }
+    [[nodiscard]] bool IsEnemyATKEnd() const;
     [[nodiscard]] bool IsEnd() const { return m_EndFighting; }
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
         std::vector<std::shared_ptr<Util::GameObject>> children;
@@ -44,6 +46,7 @@ private:
     Enemy* m_Enemy = nullptr;
     std::shared_ptr<ImageObject> m_Effect[2];
     std::shared_ptr<TextObject> m_Minus_HP[2];
+    std::shared_ptr<TextObject> m_SpecialATK;
     std::shared_ptr<ImageObject> m_Image[2];
     std::shared_ptr<TextObject> m_Name[2];
     std::shared_ptr<TextObject> m_HP_Text[2];
@@ -58,6 +61,8 @@ private:
     int m_ATK[2] = {0, 0};
     int m_DEF[2] = {0, 0};
     int m_AGI[2] = {0, 0};
+    bool m_EnemyIgnoreDEF = false;
+    int m_EnemyATKTime = 0;
     std::vector<std::shared_ptr<Util::GameObject>> m_Fighting_Children;
     std::vector<std::shared_ptr<Util::GameObject>> m_Effect_Children;
 
@@ -71,6 +76,8 @@ private:
     std::shared_ptr<TextObject> m_Coin_Text;
     std::vector<std::shared_ptr<Util::GameObject>> m_Reward_Children;
 
+    void PlayerHPMinus(int atk);
+    void EnemyHPMinus(int atk);
     void EnemyDie();
     void Reward();
 };

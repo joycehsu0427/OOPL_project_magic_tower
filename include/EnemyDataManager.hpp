@@ -1,6 +1,7 @@
 #ifndef ENEMYDATAMANAGER_HPP
 #define ENEMYDATAMANAGER_HPP
 
+#include "Enemy.hpp"
 #include "EnemyData.hpp"
 #include "ImageObject.hpp"
 #include "Player.hpp"
@@ -41,9 +42,9 @@ private:
     std::shared_ptr<ImageObject> m_LeftArrow;
     std::shared_ptr<ImageObject> m_RightArrow;
     std::shared_ptr<TextObject> m_RemindText;
-    std::vector<int> m_EnemyList = std::vector<int>();
-    int m_Page = 0;
-    int m_CurrentPage = 0;
+    std::vector<std::shared_ptr<Enemy>> m_Enemy_List = std::vector<std::shared_ptr<Enemy>>();
+    unsigned long long int m_Page = 0;
+    unsigned long long int m_CurrentPage = 0;
 
     std::vector<std::shared_ptr<Util::GameObject>> m_Children;
 

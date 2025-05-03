@@ -20,6 +20,11 @@ public:
 
     [[nodiscard]] int GetIndex() const { return m_Index; }
 
+    void SetImage(const std::string &path) const {
+        auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
+        temp->SetImage(path);
+    }
+
     virtual void Touched() = 0;
 
 protected:
