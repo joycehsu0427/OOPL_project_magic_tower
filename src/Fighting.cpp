@@ -146,10 +146,9 @@ Fighting::Fighting() {
     m_Reward_Children.push_back(m_Coin_Text);
 }
 
-void Fighting::StartFighting(Enemy *enemy) {
+void Fighting::SetStartFighting() {
     m_IsFighting = true;
     m_EndFighting = false;
-    m_Enemy = enemy;
     // 數值設定
     m_HP[0] = m_Player->GetHP();
     m_ATK[0] = m_Player->GetATK();
@@ -173,6 +172,11 @@ void Fighting::StartFighting(Enemy *enemy) {
     m_Visible = true;
     for (auto& child : m_Fighting_Children)
         child->SetVisible(m_Visible);
+}
+
+void Fighting::StartFighting(Enemy *enemy) {
+    m_Enemy = enemy;
+    SetStartFighting();
 }
 
 void Fighting::PlayerATK() {

@@ -123,7 +123,6 @@ void ShopDialog::Buy() {
             if (abs(data[COIN]) <= m_Player->GetCoins()) {
                 can_buy = true;
                 m_Player->ChangeCoins(data[COIN]);
-                LOG_DEBUG("spend money" + std::to_string(data[COIN]) + "aaa" + std::to_string(m_Player->GetCoins()));
             }
         }
         else if (data[COIN] > 0) {

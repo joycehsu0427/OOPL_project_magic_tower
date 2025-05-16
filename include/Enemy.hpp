@@ -20,8 +20,8 @@ public:
     }
 
     void Touched() override {
-        // m_Fighting->StartFighting(this);
-        Die();
+        m_Fighting->StartFighting(this);
+        // Die();
         // m_Visible = false;
     }
 

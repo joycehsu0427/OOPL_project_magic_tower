@@ -1,12 +1,12 @@
 #ifndef NPCDIALOG_HPP
 #define NPCDIALOG_HPP
 
-#include <Player.hpp>
-
+#include "Player.hpp"
 #include "Dialog.hpp"
 #include "ItemDialog.hpp"
 
 class NPC;
+class MapManager;
 
 class NPCDialog : public Dialog {
 public:
@@ -48,9 +48,14 @@ public:
     }
 
 	void SetNPCDialog(const std::string &imagePath, const std::vector <std::pair <std::string, std::string>> &dialog,
-		bool have_item, const std::pair <std::string, std::string> &item, bool hide, NPC* npc);
+		bool have_item, const std::pair <std::string, std::string> &item, bool hide, bool win, NPC* npc);
+
 	void SetPlayer(const std::shared_ptr<Player> &player) {
 		m_Player = player;
+	}
+
+	void SetMapManager(const std::shared_ptr<MapManager> &map_manager) {
+		m_MapManager = map_manager;
 	}
 	void NextDialog();
 
@@ -70,10 +75,12 @@ private:
 	bool m_HaveItem = false;
 	std::pair <std::string, std::string> m_Item;
 	bool m_IsHide = false;
+	bool m_IsWin = false;
 
 	std::shared_ptr<ItemDialog> m_ItemDialog;
 	NPC* m_NPC = nullptr;
 	std::shared_ptr<Player> m_Player;
+	std::shared_ptr<MapManager> m_MapManager;
 
 	bool is_Player;
 	float y_position = 192.5f;

@@ -12,8 +12,8 @@ public:
 
     void Touched() override {
         if (m_Index != 0) {
-            // m_Fighting->StartFighting(this);
-            Die();
+            m_Fighting->StartFighting(this);
+            // Die();
         }
     }
 

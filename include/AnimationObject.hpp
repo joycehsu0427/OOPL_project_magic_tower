@@ -36,6 +36,11 @@ public:
         temp->Pause();
     }
 
+    void SetCurrentFrameIndex(int index) const {
+        auto temp = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
+        temp->SetCurrentFrame(index);
+    }
+
     [[nodiscard]] std::size_t GetCurrentFrameIndex() const {
         auto temp = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
         return temp->GetCurrentFrameIndex();

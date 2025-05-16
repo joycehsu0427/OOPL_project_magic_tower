@@ -33,7 +33,6 @@ public:
 private:
     void ValidTask();
 
-private:
     enum class Scene {
         START,
         STORY,
@@ -78,7 +77,7 @@ private:
 
     // 樓層飛行
     std::shared_ptr<Fly> m_Fly;
-
+    // 怪物數據顯示
     std::shared_ptr<EnemyDataManager> m_EnemyDataManager;
 };
 

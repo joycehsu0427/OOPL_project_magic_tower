@@ -11,7 +11,7 @@ public:
             std::make_unique<Util::Image>(RESOURCE_DIR"/bmp/Scene/scene0.BMP"), -10) {
     }
 
-    void NextScene(const int scene) {
+    void SetScene(const int scene) {
         auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
         temp->SetImage(ImagePath(scene));
     }

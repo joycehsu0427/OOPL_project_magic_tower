@@ -17,13 +17,16 @@
 
 class ScenesManager {
 public:
-    ScenesManager(std::shared_ptr<MapManager> &mapManager, std::shared_ptr<Player> &player);
+    ScenesManager(const std::shared_ptr<MapManager> &mapManager, const std::shared_ptr<Player> &player);
 
     [[nodiscard]] std::vector<std::shared_ptr<Util::GameObject>> GetChildren() const {
-        return {m_BackGround, m_Loading, m_Story, m_Remind, m_Floor, m_PlayerImage,
-            m_PlayerStatus, m_PlayerLevel, m_PlayerHP, m_PlayerATK, m_PlayerDEF,
-            m_PlayerAGI, m_PlayerEXP,m_PlayerYellowKey, m_PlayerBlueKey, m_PlayerRedKey,
-            m_PlayerCoins, m_EndScene, m_EndText};
+        std::vector<std::shared_ptr<Util::GameObject>> children;
+        children.push_back(m_BackGround);
+        children.push_back(m_Loading);
+        children.insert(children.end(), m_StorySceneChildren.begin(), m_StorySceneChildren.end());
+        children.insert(children.end(), m_TowerSceneChildren.begin(), m_TowerSceneChildren.end());
+        children.insert(children.end(), m_EndSceneChildren.begin(), m_EndSceneChildren.end());
+        return children;
     }
 
     // Loading
@@ -31,26 +34,15 @@ public:
 
     //Story相關函數
     void StartStory () const {
-        m_Story->SetVisible(true);
-        m_Remind->SetVisible(true);
+        for (auto &child : m_StorySceneChildren)
+            child->SetVisible(true);
     }
 
     void EndStory () const {
-        m_Story->SetVisible(false);
-        m_Remind->SetVisible(false);
-        m_Floor->SetVisible(true);
-        m_PlayerImage->SetVisible(true);
-        m_PlayerStatus->SetVisible(true);
-        m_PlayerLevel->SetVisible(true);
-        m_PlayerHP->SetVisible(true);
-        m_PlayerATK->SetVisible(true);
-        m_PlayerDEF->SetVisible(true);
-        m_PlayerAGI->SetVisible(true);
-        m_PlayerEXP->SetVisible(true);
-        m_PlayerYellowKey->SetVisible(true);
-        m_PlayerBlueKey->SetVisible(true);
-        m_PlayerRedKey->SetVisible(true);
-        m_PlayerCoins->SetVisible(true);
+        for (auto &child : m_StorySceneChildren)
+            child->SetVisible(false);
+        for (auto &child : m_TowerSceneChildren)
+            child->SetVisible(true);
     }
 
     // ResetText
@@ -67,14 +59,18 @@ public:
     void ResetPlayerRedKey() const;
     void ResetPlayerCoins() const;
 
+    void StartScene();
     void NextScene();
-    void EndScene(const bool is_win);
+    void EndScene(bool is_win) const;
+    void SetEndSceneVisible(bool visible) const;
 
 private:
     std::shared_ptr<BackgroundImage> m_BackGround;
     std::shared_ptr<AnimationObject> m_Loading;
+    // Story
     std::shared_ptr<TextObject> m_Story;
-    std::shared_ptr<TextObject> m_Remind;
+    std::shared_ptr<TextObject> m_StoryRemind;
+    std::vector<std::shared_ptr<Util::GameObject>> m_StorySceneChildren;
 
     // 樓層顯示
     std::vector<std::string> m_Floortext;
@@ -91,9 +87,13 @@ private:
     std::shared_ptr<TextObject> m_PlayerBlueKey;
     std::shared_ptr<TextObject> m_PlayerRedKey;
     std::shared_ptr<TextObject> m_PlayerCoins;
+    std::vector<std::shared_ptr<Util::GameObject>> m_TowerSceneChildren;
 
+    // End顯示
     std::shared_ptr<ImageObject> m_EndScene;
     std::shared_ptr<TextObject> m_EndText;
+    std::shared_ptr<TextObject> m_EndReminder;
+    std::vector<std::shared_ptr<Util::GameObject>> m_EndSceneChildren;
 
     std::shared_ptr<MapManager> m_MapManager;
     std::shared_ptr<Player> m_Player;

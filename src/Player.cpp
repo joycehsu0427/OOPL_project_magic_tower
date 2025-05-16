@@ -1,20 +1,11 @@
 #include "Player.hpp"
 #include "ScenesManager.hpp"
-#include "Util/Animation.hpp"
+#include "Util/Image.hpp"
 
 Player::Player(int x, int y, int positionX, int positionY) {
     // 圖片設置
-    std::vector<std::string> image;
-    image.emplace_back(RESOURCE_DIR"/bmp/Player/player.png");
-    image.emplace_back(RESOURCE_DIR"/bmp/Player/player.png");
-    for (int i = 1; i <= 4; i++) {
-        std::vector <std::string> temp;
-        for (int j = 1; j <= 4; j++) {
-            temp.push_back(RESOURCE_DIR"/bmp/Player/player_" + std::to_string(i * 10 + j) + ".BMP");
-        }
-        m_Image.push_back(temp);
-    }
-    m_Drawable = std::make_shared<Util::Animation>(image, false, 500, false, 0);
+    std::string image_path = RESOURCE_DIR"/bmp/Player/player_forward.png";
+    m_Drawable = std::make_shared<Util::Image>(image_path);
     m_ZIndex = 20;
     m_Transform.scale = {0.73f, 0.73f};
     m_Pivot = {x, y};
@@ -43,6 +34,7 @@ void Player::SetSceneManager(const std::shared_ptr<ScenesManager> &scenesManager
 [[nodiscard]] int Player::GetCoins() const { return m_Coins; }
 [[nodiscard]] bool Player::CanSeeEnemyData() const { return m_SeeEnemyData; }
 [[nodiscard]] bool Player::CanFly() const { return m_Fly; }
+[[nodiscard]] bool Player::GetWin() const { return m_Win; }
 
 // 取得ScenceManager需要的文字資料
 [[nodiscard]] std::string Player::GetStatus() const {
@@ -66,6 +58,44 @@ void Player::SetSceneManager(const std::shared_ptr<ScenesManager> &scenesManager
 }
 
 // 改變資料
+void Player::SetForward() {
+    auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
+    temp->SetImage(RESOURCE_DIR"/bmp/Player/player_forward.png");
+}
+
+void Player::SetBackward() {
+    auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
+    temp->SetImage(RESOURCE_DIR"/bmp/Player/player_backward.png");
+}
+
+void Player::SetLeft() {
+    auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
+    temp->SetImage(RESOURCE_DIR"/bmp/Player/player_left.png");
+}
+
+void Player::SetRight() {
+    auto temp = std::dynamic_pointer_cast<Util::Image>(m_Drawable);
+    temp->SetImage(RESOURCE_DIR"/bmp/Player/player_right.png");
+}
+
+void Player::ResetData() {
+    m_Weak = false;
+    m_Poison = false;
+    m_Level = 1;
+    m_HP = 1000;
+    m_ATK = 10;
+    m_DEF = 10;
+    m_AGI = 1;
+    m_EXP = 0;
+    m_Keys[0] = 1;
+    m_Keys[1] = 1;
+    m_Keys[2] = 1;
+    m_Coins = 0;
+    m_SeeEnemyData = false;
+    m_Fly = false;
+    m_Win = false;
+}
+
 void Player::SetWeak(bool weak) {
     m_Weak = weak;
     m_ScenesManager->ResetPlayerStatus();
@@ -81,6 +111,9 @@ void Player::LevelUp(int level) {
         m_ATK += 5;
         m_DEF += 5;
         m_ScenesManager->ResetPlayerLevel();
+        m_ScenesManager->ResetPlayerHP();
+        m_ScenesManager->ResetPlayerATK();
+        m_ScenesManager->ResetPlayerDEF();
     }
 }
 void Player::SetHP(int hp) {
@@ -136,3 +169,6 @@ void Player::SetFly(bool fly) {
     m_Fly = fly;
 }
 
+void Player::SetWin(bool win) {
+    m_Win = win;
+}

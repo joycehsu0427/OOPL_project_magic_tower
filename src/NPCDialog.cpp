@@ -1,9 +1,10 @@
 #include "NPCDialog.hpp"
 #include "NPC.hpp"
+#include "MapManager.hpp"
 #include "Util/Logger.hpp"
 
 void NPCDialog::SetNPCDialog(const std::string &imagePath, const std::vector <std::pair <std::string, std::string>> &dialog,
-                             bool have_item, const std::pair <std::string, std::string> &item, bool hide, NPC* npc){
+                             bool have_item, const std::pair <std::string, std::string> &item, bool hide, bool win, NPC* npc){
     m_ImagePath = imagePath;
     m_DialogData = dialog;
     m_DialogTime = dialog.size();
@@ -12,6 +13,7 @@ void NPCDialog::SetNPCDialog(const std::string &imagePath, const std::vector <st
     m_HaveItem = have_item;
     m_Item = item;
     m_IsHide = hide;
+    m_IsWin = win;
     m_NPC = npc;
 
     ChangeNPCDialog();
@@ -32,6 +34,8 @@ void NPCDialog::NextDialog() {
         }
         if (m_IsHide)
             m_NPC->SetVisible(false);
+        if (m_IsWin)
+            m_Player->SetWin(true);
         return;
     }
     ChangeNPCDialog();

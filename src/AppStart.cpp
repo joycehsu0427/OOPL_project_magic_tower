@@ -44,6 +44,7 @@ void App::Start() {
 
     // 設定NPCDialog的Player指標
     m_NPCDialog->SetPlayer(m_Player);
+    m_NPCDialog->SetMapManager(m_MapManager);
 
     // 設定ShopDialog的Player指標
     m_ShopDialog->SetPlayer(m_Player);
@@ -53,6 +54,7 @@ void App::Start() {
     // 設置SceneManager
     m_SceneManager = std::make_shared<ScenesManager>(m_MapManager, m_Player);
     m_Renderer.AddChildren(m_SceneManager->GetChildren());
+    m_SceneManager->StartScene();
 
     // 設定MapManager的SceneManager指標
     m_MapManager->SetScenesManager(m_SceneManager);

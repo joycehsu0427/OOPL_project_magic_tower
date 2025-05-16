@@ -80,6 +80,7 @@ private:
     void EnemyHPMinus(int atk);
     void EnemyDie();
     void Reward();
+    void SetStartFighting();
 };
 
 #endif

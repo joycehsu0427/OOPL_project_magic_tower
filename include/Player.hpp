@@ -38,6 +38,7 @@ public:
     [[nodiscard]] int GetCoins() const;
     [[nodiscard]] bool CanSeeEnemyData() const;
     [[nodiscard]] bool CanFly() const;
+    [[nodiscard]] bool GetWin() const;
 
     [[nodiscard]] std::string GetStatus() const;
 
@@ -46,6 +47,11 @@ public:
     [[nodiscard]] std::vector<std::string> GetCurrentdaData2() const;
 
     // 改變資料
+    void SetForward();
+    void SetBackward();
+    void SetLeft();
+    void SetRight();
+    void ResetData();
     void SetWeak(bool weak);
     void SetPoison(bool poison);
     void LevelUp(int level);
@@ -61,6 +67,7 @@ public:
     void ChangeCoins(int coin);
     void SetSeeEnemyData(bool see_enemy_data);
     void SetFly(bool fly);
+    void SetWin(bool win);
 
 
 
@@ -80,6 +87,7 @@ private:
     int m_Coins = 0;                        // 金幣
     bool m_SeeEnemyData = false;
     bool m_Fly = false;
+    bool m_Win = false;
 
     // 角色圖片
     // 前0 後1 左2 右3 (各有4張照片)

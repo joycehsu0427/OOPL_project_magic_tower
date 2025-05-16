@@ -37,6 +37,7 @@ void App::Update() {
             if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
                 LOG_DEBUG("Go to Tower");
                 m_Scene = Scene::TOWER;
+                m_TowerState = TowerState::MOVING;
                 m_SceneManager->EndStory();
                 m_MapManager->StartTower();
             }
@@ -45,6 +46,12 @@ void App::Update() {
     // TOWER
     else if (m_Scene == Scene::TOWER) {
         if (m_TowerState == TowerState::MOVING) {
+            if (m_Player->GetWin()) {
+                m_MapManager->EndTower();
+                m_SceneManager->EndScene(true);
+                m_Scene = Scene::WIN;
+                LOG_DEBUG("Win");
+            }
             if (Util::Input::IsKeyUp(Util::Keycode::UP)) {
                 m_MapManager->PlayerMoveUp();
             }
@@ -57,13 +64,16 @@ void App::Update() {
             else if (Util::Input::IsKeyUp(Util::Keycode::RIGHT)) {
                 m_MapManager->PlayerMoveRight();
             }
-            else if (Util::Input::IsKeyUp(Util::Keycode::D)/* && m_Player->CanSeeEnemyData()*/) {
+            else if (Util::Input::IsKeyUp(Util::Keycode::D) && m_Player->CanSeeEnemyData()) {
                 m_EnemyDataManager->SetEnemyDataManager(m_MapManager->GetCurrentMap());
                 m_TowerState = TowerState::EnemyData;
             }
-            else if (Util::Input::IsKeyUp(Util::Keycode::F) && m_Player->CanFly()) {
+            else if (Util::Input::IsKeyUp(Util::Keycode::F) && m_Player->CanFly() && m_MapManager->GetCurrentFloor() <= 20) {
                 m_Fly->StartFly();
                 m_TowerState = TowerState::FLYING;
+            }
+            else if (Util::Input::IsKeyUp(Util::Keycode::R)) {
+                m_MapManager->ResetTower();
             }
 
             if (m_ItemDialog->IsVisible())
@@ -98,6 +108,9 @@ void App::Update() {
                     if (m_Fighting->IsEnd()) {
                         m_Fighting->EndFighting();
                         if (m_Player->GetHP()<=0) {
+                            m_Fighting->SetVisible(false);
+                            m_MapManager->EndTower();
+                            m_SceneManager->EndScene(false);
                             m_Scene = Scene::DEAD;
                             LOG_DEBUG("Dead");
                         }
@@ -137,7 +150,6 @@ void App::Update() {
                 m_ShopDialog->Fixed();
             }
             else if (!m_ShopDialog->IsVisible()) {
-                // m_ShopDialog->SetVisible(false);
                 m_TowerState = TowerState::MOVING;
             }
         }
@@ -171,12 +183,20 @@ void App::Update() {
 
     //DEAD
     else if (m_Scene == Scene::DEAD) {
-        m_SceneManager->EndScene(false);
+        if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+            m_SceneManager->StartScene();
+            m_Player->ResetData();
+            m_Scene = Scene::START;
+        }
     }
 
     //WIN
     else if (m_Scene == Scene::WIN) {
-        m_SceneManager->EndScene(true);
+        if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+            m_SceneManager->StartScene();
+            m_Player->ResetData();
+            m_Scene = Scene::START;
+        }
     }
 
 

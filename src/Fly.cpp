@@ -92,7 +92,7 @@ void Fly::SetFloor(int floor) {
     m_CurrentFloor = floor;
     m_FloorText->SetText(std::to_string(m_CurrentFloor));
 
-    if (m_CurrentFloor > m_MaxFloor) {
+    if (m_CurrentFloor > m_MaxFloor && m_CurrentFloor <= 20) {
         m_MaxFloor = m_CurrentFloor;
     }
 }
