@@ -9,8 +9,12 @@
 
 class AnimationObject : public Util::GameObject {
 public:
-    AnimationObject(const std::vector<std::string>& AnimationPaths) {
-        m_Drawable = std::make_shared<Util::Animation>(AnimationPaths, false, 500, false, 0);
+    explicit AnimationObject(const std::vector<std::string>& AnimationPaths) {
+        m_Drawable = std::make_shared<Util::Animation>(AnimationPaths, false, 500, true, 0);
+    }
+
+    AnimationObject(const std::vector<std::string>& AnimationPaths, bool Play, std::size_t Interval) {
+        m_Drawable = std::make_shared<Util::Animation>(AnimationPaths, Play, Interval, true, 0);
     }
 
     [[nodiscard]] bool IsLooping() const {
@@ -34,6 +38,10 @@ public:
     void SetPause() const {
         auto temp = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
         temp->Pause();
+    }
+
+    void SetImage(const std::vector<std::string> &AnimationPaths, bool Play, std::size_t Interval) {
+        m_Drawable = std::make_shared<Util::Animation>(AnimationPaths, Play, Interval, true, 0);
     }
 
     void SetCurrentFrameIndex(int index) const {

@@ -94,6 +94,7 @@ void Player::ResetData() {
     m_SeeEnemyData = false;
     m_Fly = false;
     m_Win = false;
+    m_ScenesManager->ResetPlayerData();
 }
 
 void Player::SetWeak(bool weak) {

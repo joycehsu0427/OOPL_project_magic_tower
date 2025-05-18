@@ -7,9 +7,18 @@
 
 class Road : public Thing {
 public:
-    Road(std::vector<std::string> data, const int &x, const int &y, const int &index) :
-    Thing("Road/" + data[0], std::stoi(data[1]), x, y, index),
-    m_ATK(std::stoi(data[2])) {
+    Road(const std::vector<std::string> &data, const int &x, const int &y, const int &index) :
+    Thing({RESOURCE_DIR"/bmp/Road/" + data[IMAGE] + ".bmp"}, true, 200,
+        std::stoi(data[TRAVERSABLE]), x, y, index),
+    m_ATK(std::stoi(data[ATK])) {
+        m_ZIndex = 5;
+    }
+
+    Road(const std::vector<std::string> &data, const bool &play, const int &x, const int &y, const int &index) :
+    Thing({RESOURCE_DIR"/bmp/Road/" + data[IMAGE] + ".bmp",
+        RESOURCE_DIR"/bmp/Road/" + data[IMAGE] + "2.bmp"}, play, 200,
+        std::stoi(data[TRAVERSABLE]), x, y, index),
+    m_ATK(std::stoi(data[ATK])) {
         m_ZIndex = 5;
     }
 
@@ -18,6 +27,11 @@ public:
     }
 
 private:
+    enum DATA {
+        IMAGE = 0,
+        TRAVERSABLE,
+        ATK
+    };
     int m_ATK;
 };
 

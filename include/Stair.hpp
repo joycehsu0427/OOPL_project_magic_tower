@@ -1,16 +1,16 @@
 #ifndef STAIR_HPP
 #define STAIR_HPP
 
-#include <MapManager.hpp>
 
 #include "Thing.hpp"
+#include "MapManager.hpp"
 
 class MapManager;
 
 class Stair : public Thing {
 public:
     Stair(const std::vector<std::string> &data, const int &x, const int &y, const int &index, MapManager* currentmap) :
-    Thing("Stair/" + data[0], true, x, y, index),
+    Thing({RESOURCE_DIR"/bmp/Stair/" + data[0] + ".bmp", RESOURCE_DIR"/bmp/Stair/" + data[0] + ".bmp"}, false, 100, true, x, y, index),
     m_Name(data[1]), m_Up(std::stoi(data[2])), m_Down(std::stoi(data[3])), m_SpecificFloor(std::stoi(data[4])),
     m_CurrentMap(currentmap) { }
 

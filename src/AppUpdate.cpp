@@ -17,7 +17,6 @@ void App::Update() {
 
             std::shared_ptr<AnimationObject> loading = m_SceneManager->GetLoading();
             loading->SetVisible(true);
-            loading->SetLooping(true);
             loading->SetPlaying();
         }
     }
@@ -28,7 +27,6 @@ void App::Update() {
         if (loading->IsLooping() && loading->IsPlaying()) {
             if (loading->GetCurrentFrameIndex() == 4) {
                 loading->SetVisible(false);
-                loading->SetLooping(false);
                 loading->SetPause();
                 m_SceneManager->StartStory();
             }
@@ -52,28 +50,34 @@ void App::Update() {
                 m_Scene = Scene::WIN;
                 LOG_DEBUG("Win");
             }
-            if (Util::Input::IsKeyUp(Util::Keycode::UP)) {
-                m_MapManager->PlayerMoveUp();
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::DOWN)) {
-                m_MapManager->PlayerMoveDown();
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::LEFT)) {
-                m_MapManager->PlayerMoveLeft();
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::RIGHT)) {
-                m_MapManager->PlayerMoveRight();
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::D) && m_Player->CanSeeEnemyData()) {
-                m_EnemyDataManager->SetEnemyDataManager(m_MapManager->GetCurrentMap());
-                m_TowerState = TowerState::EnemyData;
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::F) && m_Player->CanFly() && m_MapManager->GetCurrentFloor() <= 20) {
-                m_Fly->StartFly();
-                m_TowerState = TowerState::FLYING;
-            }
-            else if (Util::Input::IsKeyUp(Util::Keycode::R)) {
-                m_MapManager->ResetTower();
+            if (!m_MapManager->IsDoorOpening()) {
+                if (Util::Input::IsKeyUp(Util::Keycode::UP)) {
+                    m_MapManager->PlayerMoveUp();
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::DOWN)) {
+                    m_MapManager->PlayerMoveDown();
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::LEFT)) {
+                    m_MapManager->PlayerMoveLeft();
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::RIGHT)) {
+                    m_MapManager->PlayerMoveRight();
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::D) && m_Player->CanSeeEnemyData()) {
+                    m_EnemyDataManager->SetEnemyDataManager(m_MapManager->GetCurrentMap());
+                    m_TowerState = TowerState::EnemyData;
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::F) && m_Player->CanFly() && m_MapManager->GetCurrentFloor() <= 20) {
+                    m_Fly->StartFly();
+                    m_TowerState = TowerState::FLYING;
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::R)) {
+                    m_MapManager->ResetTower();
+                    m_MapManager->EndTower();
+                    m_SceneManager->StartScene();
+                    m_Player->ResetData();
+                    m_Scene = Scene::START;
+                }
             }
 
             if (m_ItemDialog->IsVisible())
@@ -181,8 +185,8 @@ void App::Update() {
         }
     }
 
-    //DEAD
-    else if (m_Scene == Scene::DEAD) {
+    //DEAD / WIN
+    else if (m_Scene == Scene::DEAD || m_Scene == Scene::WIN) {
         if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
             m_SceneManager->StartScene();
             m_Player->ResetData();
@@ -190,14 +194,14 @@ void App::Update() {
         }
     }
 
-    //WIN
-    else if (m_Scene == Scene::WIN) {
-        if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-            m_SceneManager->StartScene();
-            m_Player->ResetData();
-            m_Scene = Scene::START;
-        }
-    }
+    // //
+    // else if (m_Scene == Scene::WIN) {
+    //     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+    //         m_SceneManager->StartScene();
+    //         m_Player->ResetData();
+    //         m_Scene = Scene::START;
+    //     }
+    // }
 
 
     /*

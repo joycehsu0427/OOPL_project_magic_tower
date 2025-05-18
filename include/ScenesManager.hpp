@@ -47,6 +47,7 @@ public:
 
     // ResetText
     void ResetFloor (int courrentfloor) const;
+    void ResetPlayerData() const;
     void ResetPlayerStatus()  const;
     void ResetPlayerLevel() const;
     void ResetPlayerHP() const;

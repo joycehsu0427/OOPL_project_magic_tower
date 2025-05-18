@@ -1,8 +1,8 @@
-Path,Traversable,ATK
-lava,0,0
-lava_road,1,30
-road,1,0
-wall,0,0
-wall_b,0,0
-wall_shine,0,0
-wall_special,0,0
+Path,Traversable,ATK,Animation
+lava,0,0,1
+lava_road,1,30,1
+road,1,0,0
+wall,0,0,0
+wall_b,0,0,0
+wall_shine,0,0,1
+wall_special,0,0,0

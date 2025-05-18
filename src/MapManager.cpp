@@ -98,7 +98,6 @@ void MapManager::SetScenesManager(const std::shared_ptr<ScenesManager> &scenesMa
     m_Player->SetSceneManager(scenesManager);
 }
 
-
 // Floor移動
 void MapManager::StartTower() {
     ResetTower();
@@ -272,6 +271,22 @@ void MapManager::MovePlayer(int x, int y) {
     }
 }
 
+[[nodiscard]] bool MapManager::IsDoorOpening() {
+    if (m_OpeningDoor == nullptr)
+        return false;
+    if (m_OpeningDoor->GetCurrentFrameIndex() == 5) {
+        m_OpeningDoor->SetPause();
+        m_OpeningDoor->SetVisible(false);
+        m_OpeningDoor = nullptr;
+        return false;
+    }
+    return true;
+}
+
+void MapManager::SetOpeningDoor(Door* door) {
+    m_OpeningDoor = door;
+}
+
 [[nodiscard]] std::vector<std::vector<std::shared_ptr<Thing>>> MapManager::GetCurrentMap() const {
     std::vector<std::vector<std::shared_ptr<Thing>>> currentMap;
     for (int y = 0; y < 11; y++) {
@@ -285,7 +300,10 @@ void MapManager::MovePlayer(int x, int y) {
 }
 
 void MapManager::BuildRoad(int floor, int x, int y, int index) {
-    m_CurrentRoadMap[floor][y][x] = std::make_shared<Road>(m_RoadData[index], position_x[x], position_y[y], index);
+    if (std::stoi(m_RoadData[index][3]))
+        m_CurrentRoadMap[floor][y][x] = std::make_shared<Road>(m_RoadData[index], true, position_x[x], position_y[y], index);
+    else
+        m_CurrentRoadMap[floor][y][x] = std::make_shared<Road>(m_RoadData[index], position_x[x], position_y[y], index);
 }
 
 
@@ -298,10 +316,14 @@ void MapManager::BuildThing(int floor, int x, int y, int index) {
         m_CurrentThingMap[floor][y][x] = std::make_shared<Enemy>(m_EnemyData[num], position_x[x], position_y[y], index, m_Fighting);
     else if (index / 100 == ItemType)
         m_CurrentThingMap[floor][y][x] = std::make_shared<Item>(m_ItemData[num], position_x[x], position_y[y], index, m_Player, m_ItemDialog);
-    else if (index / 100 == NPCType)
-        m_CurrentThingMap[floor][y][x] = std::make_shared<NPC>(m_NPCData[num], floor, position_x[x], position_y[y], index, m_NPCDialog);
+    else if (index / 100 == NPCType) {
+        if (std::stoi(m_NPCData[num][3]))
+            m_CurrentThingMap[floor][y][x] = std::make_shared<NPC>(m_NPCData[num], true, floor, position_x[x], position_y[y], index, m_NPCDialog);
+        else
+            m_CurrentThingMap[floor][y][x] = std::make_shared<NPC>(m_NPCData[num], floor, position_x[x], position_y[y], index, m_NPCDialog);
+    }
     else if (index / 100 == DoorType)
-        m_CurrentThingMap[floor][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y], index, m_Player);
+        m_CurrentThingMap[floor][y][x] = std::make_shared<Door>(m_DoorData[num], position_x[x], position_y[y], index, m_Player, this);
     else if (index / 100 == StairType)
         m_CurrentThingMap[floor][y][x] = std::make_shared<Stair>(m_StairData[num], position_x[x], position_y[y], index, this);
     else if (index / 100 == ShopType)

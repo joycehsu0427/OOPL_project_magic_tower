@@ -7,7 +7,6 @@
 class BigEnemy : public Enemy {
 public:
     BigEnemy(const std::vector<std::string> &data, const int &x, const int &y, const std::shared_ptr<Fighting> &fighting)  :
-    Thing("Enemy/" + data[0], false, x, y, std::stoi(data[15])),
     Enemy(data, x, y, std::stoi(data[15]), fighting) {}
 
     void Touched() override {

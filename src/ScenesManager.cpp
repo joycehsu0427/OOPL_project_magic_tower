@@ -138,6 +138,21 @@ m_MapManager(mapmanager), m_Player(player) {
 void ScenesManager::ResetFloor (int courrentfloor) const {
     m_Floor->SetText(m_Floortext[courrentfloor]);
 }
+
+void ScenesManager::ResetPlayerData() const {
+    ResetPlayerStatus();
+    ResetPlayerLevel();
+    ResetPlayerHP();
+    ResetPlayerATK();
+    ResetPlayerDEF();
+    ResetPlayerAGI();
+    ResetPlayerEXP();
+    ResetPlayerYellowKey();
+    ResetPlayerBlueKey();
+    ResetPlayerRedKey();
+    ResetPlayerCoins();
+}
+
 void ScenesManager::ResetPlayerStatus()  const {
     m_PlayerStatus->SetText(m_Player->GetStatus());
 }

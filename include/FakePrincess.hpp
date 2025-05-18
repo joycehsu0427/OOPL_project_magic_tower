@@ -3,21 +3,20 @@
 
 #include "Enemy.hpp"
 #include "NPC.hpp"
+#include "MapManager.hpp"
 
-class MapManager;
-
-class FakePrincess : public Enemy, public NPC {
+class FakePrincess : public Enemy{
 public:
     FakePrincess(const std::vector<std::string> &enemydata, const std::vector<std::string> &npcdata, const int &floor,
     const int &x, const int &y, const std::shared_ptr<Fighting> &fighting, const std::shared_ptr<NPCDialog> &npcDialog, MapManager *mapManager):
-    Thing("Enemy/" + enemydata[0], false, x, y, std::stoi(enemydata[15])),
-    Enemy(enemydata, x, y, std::stoi(enemydata[15]), fighting),
-    NPC(npcdata, floor, x, y, std::stoi(enemydata[15]), npcDialog), m_MapManager(mapManager){}
+    Enemy(enemydata, x, y, std::stoi(enemydata[15]), fighting), m_MapManager(mapManager) {
+        m_NPC = std::make_shared<NPC>(npcdata, floor, x, y, std::stoi(enemydata[15]), npcDialog);
+    }
 
     void Touched() override {
         if (m_Touch == NPCDialogTouch) {
             m_Touch = FightingTouch;
-            m_NPCDialog->SetNPCDialog(m_ImagePath, m_Dialog, m_HaveItem, m_Item, m_Hide, false, this);
+            m_NPC->Touched();
             m_MapManager->FakePrincessStart();
             if (m_Traversable)
                 m_Visible = false;
@@ -29,7 +28,7 @@ public:
         }
     }
 
-    void Die() override {
+    void Die() override{
         m_Visible = false;
         m_MapManager->FakePrincessEnd();
     }
@@ -40,7 +39,7 @@ private:
         FightingTouch
     };
     int m_Touch = NPCDialogTouch;
-
+    std::shared_ptr<NPC> m_NPC;
     MapManager *m_MapManager;
 };
 

@@ -5,6 +5,7 @@
 
 #include "Road.hpp"
 #include "Thing.hpp"
+#include "Door.hpp"
 #include "Player.hpp"
 #include "Fighting.hpp"
 #include "ItemDialog.hpp"
@@ -38,6 +39,7 @@ public:
                 if (m_FakePrincessThingMap[y][x] != nullptr) {
                     children.push_back(m_FakePrincessThingMap[y][x]);
                 }
+
             }
         }
         children.push_back(m_Player);
@@ -66,6 +68,9 @@ public:
 
     void SetScenesManager(const std::shared_ptr<ScenesManager> &scenesManager);
 
+    [[nodiscard]] bool IsDoorOpening();
+    void SetOpeningDoor(Door* door);
+
 private:
     enum ThingType {
         EnemyType = 1,
@@ -77,6 +82,8 @@ private:
         BigEnemyType,
         FakePrincessType
     };
+
+    Door* m_OpeningDoor = nullptr;
 
     // 處存每格位置的變數
     float start_position_x;
