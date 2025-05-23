@@ -276,6 +276,7 @@ void MapManager::MovePlayer(int x, int y) {
         return false;
     if (m_OpeningDoor->GetCurrentFrameIndex() == 5) {
         m_OpeningDoor->SetPause();
+        m_OpeningDoor->SetCurrentFrameIndex(0);
         m_OpeningDoor->SetVisible(false);
         m_OpeningDoor = nullptr;
         return false;

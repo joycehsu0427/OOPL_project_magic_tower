@@ -281,10 +281,6 @@ void Fighting::QuitFighting() {
 }
 
 void Fighting::EndFighting() {
-    for (int i = 0; i < 2; i++) {
-        m_Effect[i]->SetVisible(false);
-        m_Minus_HP[i]->SetVisible(false);
-    }
     m_IsFighting = false;
     if (m_HP[1] <= 0)
         EnemyDie();

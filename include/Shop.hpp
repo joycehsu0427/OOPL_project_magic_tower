@@ -7,13 +7,14 @@
 
 class Shop : public Thing {
 public:
-    Shop(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<ShopDialog> &shopDialog) :
-    Thing (std::vector<std::string>{RESOURCE_DIR"/bmp/Shop/" + data[0] + ".bmp",
-        RESOURCE_DIR"/bmp/Shop/" + data[0] + "2.bmp"}, true, 400, false, x, y, index),
-    m_ImagePath(RESOURCE_DIR"/bmp/Shop/" + data[0] + ".bmp"), m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + ".csv"),
-    m_OptionPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + "_option.csv"),
-    m_Name(data[1]), m_CanTouched(std::stoi(data[2])), m_Money(std::stoi(data[3])),
-    m_ShopDialog(shopDialog) {
+    Shop(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index,
+        const std::shared_ptr<ShopDialog> &shopDialog) :
+    Thing (std::vector<std::string>{RESOURCE_DIR"/bmp/Shop/" + data[IMAGE] + ".bmp",
+        RESOURCE_DIR"/bmp/Shop/" + data[IMAGE] + "2.bmp"}, true, 400, false, x, y, index),
+    m_ImagePath(RESOURCE_DIR"/bmp/Shop/" + data[IMAGE] + ".bmp"),
+    m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[IMAGE] + ".csv"),
+    m_OptionPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[IMAGE] + "_option.csv"),
+    m_Name(data[NAME]), m_CanTouched(std::stoi(data[CANTOUCHED])), m_Money(std::stoi(data[MONEY])), m_ShopDialog(shopDialog) {
         if (m_CanTouched) {
             // 設定要傳送的Dialog資料
             std::vector<std::vector<std::string>> dialogdata = Read::open_csv(m_DialogPath);
@@ -42,6 +43,12 @@ public:
     }
 
 private:
+    enum DATA {
+        IMAGE = 0,
+        NAME,
+        CANTOUCHED,
+        MONEY
+    };
     std::string m_ImagePath;
     std::string m_DialogPath;
     std::string m_OptionPath;

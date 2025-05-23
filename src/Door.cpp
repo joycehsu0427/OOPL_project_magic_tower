@@ -1,13 +1,14 @@
 #include "Door.hpp"
 #include "MapManager.hpp"
 
-Door::Door(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Player> &player, MapManager* mapmanager) :
-    Thing({RESOURCE_DIR"/bmp/Door/" + data[0] + ".bmp",
-        RESOURCE_DIR"/bmp/Door/" + data[0] + "2.bmp", RESOURCE_DIR"/bmp/Door/" + data[0] + "3.bmp",
-        RESOURCE_DIR"/bmp/Door/" + data[0] + "4.bmp", RESOURCE_DIR"/bmp/Door/" + data[0] + "5.bmp",
-        RESOURCE_DIR"/bmp/Door/no_door.png"}, false, 200, false, x, y, index),
-    m_Name(data[1]), m_YellowKey(std::stoi(data[2])), m_BlueKey(std::stoi(data[3])), m_RedKey(std::stoi(data[4])),
-    m_Player(player), m_MapManager(mapmanager){}
+Door::Door(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Player> &player,
+    MapManager* mapmanager) :
+Thing({RESOURCE_DIR"/bmp/Door/" + data[IMAGE] + ".bmp",
+    RESOURCE_DIR"/bmp/Door/" + data[IMAGE] + "2.bmp", RESOURCE_DIR"/bmp/Door/" + data[IMAGE] + "3.bmp",
+    RESOURCE_DIR"/bmp/Door/" + data[IMAGE] + "4.bmp", RESOURCE_DIR"/bmp/Door/" + data[IMAGE] + "5.bmp",
+    RESOURCE_DIR"/bmp/Door/no_door.png"}, false, 100, false, x, y, index),
+m_Name(data[NAME]), m_YellowKey(std::stoi(data[YELLOWKEY])), m_BlueKey(std::stoi(data[BLUEKEY])), m_RedKey(std::stoi(data[REDKEY])),
+m_Player(player), m_MapManager(mapmanager){}
 
 void Door::Touched() {
     if (m_YellowKey != 0) {
@@ -37,6 +38,4 @@ void Door::OpenDoor() {
     auto temp = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
     temp->Play();
     m_MapManager->SetOpeningDoor(this);
-    // m_Traversable = true;
-    // m_Visible = false;
 }

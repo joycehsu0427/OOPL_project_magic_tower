@@ -11,6 +11,7 @@ public:
     Fly();
 
 	void StartFly();
+	void ResetFly();
 	void Up();
 	void Down();
 	void Confirm();

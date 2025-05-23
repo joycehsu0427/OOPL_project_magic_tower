@@ -72,6 +72,12 @@ void ShopDialog::Fixed() {
     }
 }
 
+void ShopDialog::ResetShopDialog() {
+    m_Money = 20;
+    m_MoneyText->SetText(std::to_string(m_Money));
+}
+
+
 void ShopDialog::SetShopDialog(const std::string &imagePath, const std::pair <std::string, std::string> &dialog,
     bool spendmoney, const std::vector<std::vector<std::string>> &optiondata, bool hide, Shop* shop) {
     m_People->SetImage(imagePath);

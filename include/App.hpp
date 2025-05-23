@@ -69,6 +69,7 @@ private:
     // 戰鬥畫面
     std::shared_ptr<Fighting> m_Fighting;
     int m_FightingTimer = 0;
+    bool m_FightingSpeedUp = false;
 
     // Dialog
     std::shared_ptr<ItemDialog> m_ItemDialog;

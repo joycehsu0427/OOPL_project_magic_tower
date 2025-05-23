@@ -13,6 +13,7 @@ public:
     void OptionUp();
     void OptionDown();
     void Fixed();
+    void ResetShopDialog();
 
     void SetVisible(bool visible) override {
         m_Visible = visible;

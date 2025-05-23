@@ -11,19 +11,23 @@
 
 class NPC : public Thing {
 public:
-    NPC(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<NPCDialog> &npcDialog) :
-    Thing({RESOURCE_DIR"/bmp/NPC/" + data[0] + ".bmp"}, false, 400,
-        std::stoi(data[2]), x, y, index),
-    m_ImagePath(RESOURCE_DIR"/bmp/NPC/" + data[0] + ".bmp"), m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + ".csv"),
-    m_Name(data[1]), m_NPCDialog(npcDialog){
+    NPC(const std::vector<std::string> &data, const int &floor, const int &x, const int &y, const int &index,
+        const std::shared_ptr<NPCDialog> &npcDialog) :
+    Thing({RESOURCE_DIR"/bmp/NPC/" + data[IMAGE] + ".bmp"}, false, 400,
+        std::stoi(data[TRAVERSABLE]), x, y, index),
+    m_ImagePath(RESOURCE_DIR"/bmp/NPC/" + data[IMAGE] + ".bmp"),
+    m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[IMAGE] + ".csv"),
+    m_Name(data[NAME]), m_NPCDialog(npcDialog){
         constructor();
     }
 
-    NPC(const std::vector<std::string> &data, const bool &play, const int &floor, const int &x, const int &y, const int &index, const std::shared_ptr<NPCDialog> &npcDialog) :
-    Thing({RESOURCE_DIR"/bmp/NPC/" + data[0] + ".bmp",
-        RESOURCE_DIR"/bmp/NPC/" + data[0] + "2.bmp"}, play, 400, std::stoi(data[2]), x, y, index),
-    m_ImagePath(RESOURCE_DIR"/bmp/NPC/" + data[0] + ".bmp"), m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[0] + ".csv"),
-    m_Name(data[1]), m_NPCDialog(npcDialog){
+    NPC(const std::vector<std::string> &data, const bool &play, const int &floor, const int &x, const int &y, const int &index,
+        const std::shared_ptr<NPCDialog> &npcDialog) :
+    Thing({RESOURCE_DIR"/bmp/NPC/" + data[IMAGE] + ".bmp",
+        RESOURCE_DIR"/bmp/NPC/" + data[IMAGE] + "2.bmp"}, play, 400,     std::stoi(data[TRAVERSABLE]), x, y, index),
+    m_ImagePath(RESOURCE_DIR"/bmp/NPC/" + data[IMAGE] + ".bmp"),
+    m_DialogPath(RESOURCE_DIR"/Text/" + std::to_string(floor) + "_" + data[IMAGE] + ".csv"),
+    m_Name(data[NAME]), m_NPCDialog(npcDialog){
         constructor();
     }
 
@@ -33,7 +37,12 @@ public:
             m_Visible = false;
     }
 
-protected:
+private:
+    enum DATA {
+        IMAGE = 0,
+        NAME,
+        TRAVERSABLE
+    };
     std::string m_ImagePath;
     std::string m_DialogPath;
     std::string m_Name;

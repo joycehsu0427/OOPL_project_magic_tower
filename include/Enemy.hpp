@@ -11,13 +11,12 @@
 class Enemy : public Thing {
 public:
     Enemy(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Fighting> &fighting) :
-    Thing({RESOURCE_DIR"/bmp/Enemy/" + data[0] + ".bmp",
-        RESOURCE_DIR"/bmp/Enemy/" + data[0] + "2.bmp"}, true, 400, false, x, y, index),
-    m_Name(data[1]), m_HP(std::stoi(data[2])), m_ATK(std::stoi(data[3])), m_DEF(std::stoi(data[4])),
-    m_AGI(std::stoi(data[5])), m_EXP(std::stoi(data[6])), m_Coin(std::stoi(data[7])), m_Weak(std::stoi(data[8])),
-    m_Poison(std::stoi(data[9])), m_ATK_Time(std::stoi(data[10])), m_Ignore_DEF(std::stoi(data[11])), m_Next_Enemy(std::stoi(data[12])),
-    m_Killing_ATK(std::stoi(data[13])), m_Special(data[14]), m_Fighting(fighting) {
-
+    Thing({RESOURCE_DIR"/bmp/Enemy/" + data[IMAGE] + ".bmp",
+        RESOURCE_DIR"/bmp/Enemy/" + data[IMAGE] + "2.bmp"}, true, 400, false, x, y, index),
+    m_Name(data[NAME]), m_HP(std::stoi(data[HP])), m_ATK(std::stoi(data[ATK])), m_DEF(std::stoi(data[DEF])),
+    m_AGI(std::stoi(data[AGI])), m_EXP(std::stoi(data[EXP])), m_Coin(std::stoi(data[COIN])), m_Weak(std::stoi(data[WEAK])),
+    m_Poison(std::stoi(data[POISON])), m_ATK_Time(std::stoi(data[ATKTIME])), m_Ignore_DEF(std::stoi(data[IGNOREDEF])),
+    m_Next_Enemy(std::stoi(data[NEXTENEMY])), m_Killing_ATK(std::stoi(data[KILLINGATK])), m_Special(data[SPECIAL]), m_Fighting(fighting) {
         m_Image_Path = {RESOURCE_DIR"/bmp/Enemy/" + data[0] + ".bmp",
         RESOURCE_DIR"/bmp/Enemy/" + data[0] + "2.bmp"};
     }
@@ -71,6 +70,23 @@ public:
     [[nodiscard]] std::string GetImage_Path() const { return m_Image_Path[0]; }
 
 protected:
+    enum DATA {
+        IMAGE = 0,
+        NAME,
+        HP,
+        ATK,
+        DEF,
+        AGI,
+        EXP,
+        COIN,
+        WEAK,
+        POISON,
+        ATKTIME,
+        IGNOREDEF,
+        NEXTENEMY,
+        KILLINGATK,
+        SPECIAL
+    };
     std::string m_Name;
     int m_HP;                   // 血量
     int m_ATK;                  // 攻擊力

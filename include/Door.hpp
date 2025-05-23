@@ -10,11 +10,19 @@ class MapManager;
 
 class Door : public Thing{
 public:
-    Door(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Player> &player, MapManager* mapmanager);
+    Door(const std::vector<std::string> &data, const int &x, const int &y, const int &index, const std::shared_ptr<Player> &player,
+        MapManager* mapmanager);
 
     void Touched() override;
 
 private:
+    enum DATA {
+        IMAGE = 0,
+        NAME,
+        YELLOWKEY,
+        BLUEKEY,
+        REDKEY
+    };
     std::string m_Name;
     int m_YellowKey;
     int m_BlueKey;

@@ -51,6 +51,12 @@ void Fly::StartFly() {
     SetVisible(true);
 }
 
+void Fly::ResetFly() {
+    m_CurrentFloor = 0;
+    m_MaxFloor = 0;
+    m_MinFloor = 0;
+}
+
 void Fly::Up() {
     if (m_CurrentFloor < m_MaxFloor) {
         if (m_CurrentFloor == m_MinFloor) {
