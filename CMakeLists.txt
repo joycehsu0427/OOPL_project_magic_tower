@@ -38,7 +38,6 @@ add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
-        src/Door.cpp
 )
 
 if(MSVC)

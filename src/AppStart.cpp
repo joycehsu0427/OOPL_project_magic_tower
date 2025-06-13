@@ -24,6 +24,13 @@ void App::Start() {
     m_ShopDialog = std::make_shared<ShopDialog>();
     m_Renderer.AddChildren(m_ShopDialog->GetChildren());
 
+    //設置NoticeImage
+    m_NoticeImage = std::make_shared<ImageObject>(RESOURCE_DIR"/bmp/Special/notice.bmp", 30);
+    m_NoticeImage->SetPivot({-194, 0});
+    m_NoticeImage->SetVisible(false);
+    m_NoticeImage->SetScale(0.732f);
+    m_Renderer.AddChild(m_NoticeImage);
+
     //設置EnemyDataManager
     m_EnemyDataManager = std::make_shared<EnemyDataManager>();
     m_Renderer.AddChildren(m_EnemyDataManager->GetChildren());

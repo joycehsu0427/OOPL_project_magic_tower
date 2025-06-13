@@ -43,13 +43,14 @@ void App::Update() {
             }
         }
     }
+
     // TOWER
     else if (m_Scene == Scene::TOWER) {
         if (m_TowerState == TowerState::MOVING) {
             if (m_Player->GetWin()) {
                 m_MapManager->EndTower();
                 m_SceneManager->EndScene(true);
-                m_Scene = Scene::WIN;
+                m_Scene = Scene::END;
                 LOG_DEBUG("Win");
             }
             if (!m_MapManager->IsDoorOpening()) {
@@ -79,6 +80,13 @@ void App::Update() {
                     m_SceneManager->StartScene();
                     m_Player->ResetData();
                     m_Scene = Scene::START;
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::W)) {
+                    m_NoticeImage->SetVisible(true);
+                    m_TowerState = TowerState::Notice;
+                }
+                else if (Util::Input::IsKeyUp(Util::Keycode::A)) {
+                    m_Player->SetCheating(!m_Player->GetCheating());
                 }
             }
 
@@ -131,7 +139,10 @@ void App::Update() {
                     if (m_Fighting->IsEnd()) {
                         m_Fighting->EndFighting();
                         if (m_Player->GetHP()<=0) {
-                            m_Scene = Scene::DEAD;
+                            m_Scene = Scene::END;
+                            m_Fighting->SetVisible(false);
+                            m_MapManager->EndTower();
+                            m_SceneManager->EndScene(false);
                             LOG_DEBUG("Dead");
                         }
                     }
@@ -204,20 +215,16 @@ void App::Update() {
                 m_TowerState = TowerState::MOVING;
             }
         }
-    }
-
-    //DEAD / WIN
-    else if (m_Scene == Scene::DEAD) {
-        if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-            m_Fighting->SetVisible(false);
-            m_MapManager->EndTower();
-            m_SceneManager->EndScene(false);
-            m_Scene = Scene::WIN;
+        else if (m_TowerState == TowerState::Notice) {
+            if (Util::Input::IsKeyUp(Util::Keycode::W)) {
+                m_NoticeImage->SetVisible(false);
+                m_TowerState = TowerState::MOVING;
+            }
         }
     }
 
-    //WIN
-    else if (m_Scene == Scene::WIN) {
+    //END
+    else if (m_Scene == Scene::END) {
         if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
             m_SceneManager->StartScene();
             m_Player->ResetData();

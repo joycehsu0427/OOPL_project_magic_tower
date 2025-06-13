@@ -39,6 +39,7 @@ public:
     [[nodiscard]] bool CanSeeEnemyData() const;
     [[nodiscard]] bool CanFly() const;
     [[nodiscard]] bool GetWin() const;
+    [[nodiscard]] bool GetCheating() const;
 
     [[nodiscard]] std::string GetStatus() const;
 
@@ -68,6 +69,7 @@ public:
     void SetSeeEnemyData(bool see_enemy_data);
     void SetFly(bool fly);
     void SetWin(bool win);
+    void SetCheating(bool cheating);
 
 
 
@@ -88,6 +90,7 @@ private:
     bool m_SeeEnemyData = false;
     bool m_Fly = false;
     bool m_Win = false;
+    bool m_Cheating = false;
 
     // 角色圖片
     // 前0 後1 左2 右3 (各有4張照片)

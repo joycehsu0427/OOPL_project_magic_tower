@@ -3,6 +3,7 @@ set(SRC_FILES
     AppStart.cpp
     AppUpdate.cpp
     AppUtil.cpp
+    Door.cpp
     EnemyData.cpp
     EnemyDataManager.cpp
     Fighting.cpp

@@ -45,6 +45,8 @@ public:
             child->SetVisible(true);
     }
 
+
+
     // ResetText
     void ResetFloor (int courrentfloor) const;
     void ResetPlayerData() const;
@@ -88,6 +90,7 @@ private:
     std::shared_ptr<TextObject> m_PlayerBlueKey;
     std::shared_ptr<TextObject> m_PlayerRedKey;
     std::shared_ptr<TextObject> m_PlayerCoins;
+    std::shared_ptr<TextObject> m_Reminder;
     std::vector<std::shared_ptr<Util::GameObject>> m_TowerSceneChildren;
 
     // End顯示

@@ -23,7 +23,7 @@ void Player::SetSceneManager(const std::shared_ptr<ScenesManager> &scenesManager
 [[nodiscard]] bool Player::GetPoison() const {return m_Poison;}
 [[nodiscard]] int Player::GetLevel() const { return m_Level; }
 [[nodiscard]] int Player::GetHP() const { return m_HP; }
-[[nodiscard]] int Player::GetATK() const { return m_ATK; }
+[[nodiscard]] int Player::GetATK() const { return (m_Cheating)?3571:m_ATK; }
 [[nodiscard]] int Player::GetDEF() const { return m_DEF; }
 [[nodiscard]] int Player::GetAGI() const { return m_AGI; }
 [[nodiscard]] int Player::GetEXP() const { return m_EXP; }
@@ -35,6 +35,7 @@ void Player::SetSceneManager(const std::shared_ptr<ScenesManager> &scenesManager
 [[nodiscard]] bool Player::CanSeeEnemyData() const { return m_SeeEnemyData; }
 [[nodiscard]] bool Player::CanFly() const { return m_Fly; }
 [[nodiscard]] bool Player::GetWin() const { return m_Win; }
+[[nodiscard]] bool Player::GetCheating() const { return m_Cheating; }
 
 // 取得ScenceManager需要的文字資料
 [[nodiscard]] std::string Player::GetStatus() const {
@@ -172,4 +173,9 @@ void Player::SetFly(bool fly) {
 
 void Player::SetWin(bool win) {
     m_Win = win;
+}
+
+void Player::SetCheating(bool cheating) {
+    m_Cheating = cheating;
+    m_ScenesManager->ResetPlayerATK();
 }

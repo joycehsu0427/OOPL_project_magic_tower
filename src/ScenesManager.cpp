@@ -120,11 +120,16 @@ m_MapManager(mapmanager), m_Player(player) {
     m_PlayerCoins->SetVisible(false);
     m_TowerSceneChildren.push_back(m_PlayerCoins);
 
+    m_Reminder = std::make_shared<TextObject>(20, "-Press W-", Util::Color::FromName(Util::Colors::DARK_BLUE), 15);
+    m_Reminder->SetPivot({-402, 330});
+    m_Reminder->SetVisible(false);
+    m_TowerSceneChildren.push_back(m_Reminder);
+
     m_EndScene = std::make_shared<ImageObject>(RESOURCE_DIR"/bmp/Scene/end.bmp", 50);
     m_EndScene->SetVisible(false);
     m_EndSceneChildren.push_back(m_EndScene);
 
-    m_EndText = std::make_shared<TextObject>(80, "Win!!!", 55);
+    m_EndText = std::make_shared<TextObject>(100, "Win!!!", 55);
     m_EndText->SetVisible(false);
     m_EndSceneChildren.push_back(m_EndText);
 
@@ -220,7 +225,7 @@ void ScenesManager::EndScene(bool is_win) const {
         m_EndText->SetText("Win!!!");
     }
     else {
-        m_EndText->SetText("相信你可以做得更好!!!");
+        m_EndText->SetText("Game Over!");
     }
 }
 

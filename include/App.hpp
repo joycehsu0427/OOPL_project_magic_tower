@@ -37,8 +37,7 @@ private:
         START,
         STORY,
         TOWER,
-        DEAD,
-        WIN
+        END
     };
 
     enum class TowerState {
@@ -50,7 +49,8 @@ private:
         STAIRMOVING,
         SHOPDIALOG,
         FLYING,
-        EnemyData
+        EnemyData,
+        Notice
     };
 
     State m_CurrentState = State::START;
@@ -75,6 +75,9 @@ private:
     std::shared_ptr<ItemDialog> m_ItemDialog;
     std::shared_ptr<NPCDialog> m_NPCDialog;
     std::shared_ptr<ShopDialog> m_ShopDialog;
+
+    // notice
+    std::shared_ptr<ImageObject> m_NoticeImage;
 
     // 樓層飛行
     std::shared_ptr<Fly> m_Fly;
