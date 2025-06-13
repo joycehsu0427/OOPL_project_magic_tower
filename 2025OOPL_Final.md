@@ -83,7 +83,7 @@ graph TD
     Util::GameObject --> TextObject
     Util::GameObject --> BackGroundImage
     
-    AniamtionObject --> Thing
+    AnimationObject --> Thing
     
     Thing --> Road
     Thing --> Enemy
