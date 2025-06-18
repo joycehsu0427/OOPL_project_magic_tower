@@ -121,6 +121,7 @@ void MapManager::ResetTower() {
     m_Player->SetPivot({position_x[5], position_y[10]});
     m_Player->SetPosition(5, 10);
     m_Player->SetVisible(true);
+    m_ScenesManager->ResetFloor(m_CurrentFloor);
     for (int i = 0; i < m_TopFloor; i++) {
         for (int y = 0; y < 11; y++) {
             for (int x = 0; x < 11; x++) {
